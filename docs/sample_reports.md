@@ -281,3 +281,62 @@ willitload scan -- ./raw_logs/**/*.jsonl
 No structural anomalies detected within the fileset.
 ```
 
+---
+
+## 📊 Scenario 8: Real-World 5,000+ Reddit Dataset Scan (Large Nested CSV Fileset)
+
+Running `scan` across a partitioned dataset containing **5,074 CSV files** of subreddit mentions (`top-things.zip`). The engine profiles the entire fileset in **19.4 seconds** (< 4ms per file) and uncovers structural anomalies, multi-record regimes, and column type drift across the partition.
+
+### Command
+```bash
+willitload scan "./reddits/**/*.csv"
+```
+
+### Terminal Output
+```ansi
+willitload scan -- ./reddits/**/*.csv
+  5074 files seen  |  5074 profiled  |  0 degraded  |  0 catalogued  |  0 refused
+  Elapsed: 19437ms
+
+Fileset Findings
+  WARN Column 'name' infers as different types across files in family F0001: 
+text in 5073 files, int in 1 file(s). This is especially dangerous for 
+sequential concat operations (pandas, etc.) where type coercion can silently 
+corrupt data.
+  WARN Column 'total_mentions' infers as different types across files in family 
+F0001: int in 5063 files, text in 11 file(s). This is especially dangerous for 
+sequential concat operations (pandas, etc.) where type coercion can silently 
+corrupt data.
+
+1 structural family detected
++-----------------------------------------------------------------------------+
+| Family | Files | Columns | Type Variants | Representative Columns           |
+|--------+-------+---------+---------------+----------------------------------|
+| F0001  |  5074 |       5 |             3 | name, category, amazon_link,     |
+|        |       |         |               | total_mentions,                  |
+|        |       |         |               | subreddit_mentions               |
++-----------------------------------------------------------------------------+
+
+103 broken file(s)
+  [X] ./reddits/a/ATBGE.csv
+      ERROR row 4, row 5: 2 row(s) have a column count that deviates from the 
+file's mode (5 columns). Likely cause: unescaped delimiter or embedded newline.
+  [X] ./reddits/a/arrow.csv
+      ERROR row 7: 1 row(s) have a column count that deviates from the file's 
+mode (5 columns). Likely cause: unescaped delimiter or embedded newline.
+      WARN row 9: Final sampled row (row 9) has 6 columns vs expected 5. 
+Possible totals/summary row appended to the data. (TRAILING_SUMMARY)
+  [X] ./reddits/b/BoJackHorseman.csv
+      ERROR row 6, row 7, row 8: 3 row(s) have a column count that deviates 
+from the file's mode (5 columns). Likely cause: unescaped delimiter or embedded 
+newline.
+      WARN file structure: File contains 2 distinct stable column-count 
+regimes, suggesting multiple logical record types stacked vertically. (MULTI_RECORD)
+  [X] ./reddits/c/CHIBears.csv
+      ERROR row 11: 1 row(s) have a column count that deviates from the file's 
+mode (5 columns). Likely cause: unescaped delimiter or embedded newline.
+      WARN file structure: File contains 2 distinct stable column-count 
+regimes, suggesting multiple logical record types stacked vertically. (MULTI_RECORD)
+```
+
+
