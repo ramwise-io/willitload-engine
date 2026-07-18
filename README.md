@@ -1,7 +1,7 @@
 # willitload — Fileset Structural Pre-Flight for Bulk Loads
 
 [![Tests](https://github.com/ramca-cyber/willitload-engine/actions/workflows/test.yml/badge.svg)](https://github.com/ramca-cyber/willitload-engine/actions)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
 `willitload` is a stateless, deterministic, local-first engine designed to validate bulk filesets before your loader attempts to ingest them. It finds the single structurally broken file that would fail your bulk load, allowing you to quarantine it *before* wasting hours of pipeline compute.
