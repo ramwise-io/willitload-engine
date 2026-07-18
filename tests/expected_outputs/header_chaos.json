@@ -1,16 +1,17 @@
 {
+  "version": "0.1.0",
+  "path_expression": "tests/fixtures/header_chaos",
+  "elapsed_ms": 0.0,
   "accounting": {
-    "catalogued": 0,
-    "degraded": 0,
     "files_seen": 3,
     "profiled": 3,
-    "reconciles": true,
-    "refused": 0
+    "degraded": 0,
+    "catalogued": 0,
+    "refused": 0,
+    "reconciles": true
   },
-  "elapsed_ms": 0.0,
   "families": [
     {
-      "column_count": 5,
       "family_id": "F0001",
       "file_count": 2,
       "representative_columns": [
@@ -20,11 +21,11 @@
         "column3",
         "column4"
       ],
+      "column_count": 5,
       "type_variants": 2,
       "within_family_findings": []
     },
     {
-      "column_count": 5,
       "family_id": "F0002",
       "file_count": 1,
       "representative_columns": [
@@ -34,14 +35,67 @@
         "status",
         "notes"
       ],
+      "column_count": 5,
       "type_variants": 1,
       "within_family_findings": []
     }
   ],
+  "scan_findings": [
+    {
+      "reason_code": "TYPE_MISMATCH",
+      "severity": "WARN",
+      "locus": "column 'column1' (family F0001)",
+      "expected": "date (1/2 files)",
+      "found": "int in 1 file(s)",
+      "explanation": "Column 'column1' infers as different types across files in family F0001: date in 1 files, int in 1 file(s). This is especially dangerous for sequential concat operations (pandas, etc.) where type coercion can silently corrupt data.",
+      "confidence": 2
+    },
+    {
+      "reason_code": "TYPE_MISMATCH",
+      "severity": "WARN",
+      "locus": "column 'column3' (family F0001)",
+      "expected": "text (1/2 files)",
+      "found": "int in 1 file(s)",
+      "explanation": "Column 'column3' infers as different types across files in family F0001: text in 1 files, int in 1 file(s). This is especially dangerous for sequential concat operations (pandas, etc.) where type coercion can silently corrupt data.",
+      "confidence": 2
+    },
+    {
+      "reason_code": "TYPE_MISMATCH",
+      "severity": "WARN",
+      "locus": "column 'column4' (family F0001)",
+      "expected": "text (1/2 files)",
+      "found": "int in 1 file(s)",
+      "explanation": "Column 'column4' infers as different types across files in family F0001: text in 1 files, int in 1 file(s). This is especially dangerous for sequential concat operations (pandas, etc.) where type coercion can silently corrupt data.",
+      "confidence": 2
+    }
+  ],
   "file_verdicts": [
     {
+      "path": "tests/fixtures/header_chaos/no_header.csv",
       "bucket": "profiled",
+      "verdict": "conforms",
+      "findings": [],
+      "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": false,
       "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
+      "raw_column_names": [
+        "column0",
+        "column1",
+        "column2",
+        "column3",
+        "column4"
+      ],
+      "normalized_column_names": [
+        "column0",
+        "column1",
+        "column2",
+        "column3",
+        "column4"
+      ],
       "column_types": {
         "column0": "int",
         "column1": "date",
@@ -49,21 +103,21 @@
         "column3": "text",
         "column4": "text"
       },
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "First member of new family 'F0001' (5 columns: column0, column1, column2, column3, column4).",
-      "family_id": "F0001",
+      "type_variant_id": "V0001",
+      "explanation": "First member of new family 'F0001' (5 columns: column0, column1, column2, column3, column4)."
+    },
+    {
+      "path": "tests/fixtures/header_chaos/numeric_header.csv",
+      "bucket": "profiled",
+      "verdict": "conforms",
       "findings": [],
       "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
       "has_header": false,
-      "normalized_column_names": [
-        "column0",
-        "column1",
-        "column2",
-        "column3",
-        "column4"
-      ],
-      "path": "tests/fixtures/header_chaos/no_header.csv",
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
       "raw_column_names": [
         "column0",
         "column1",
@@ -71,14 +125,13 @@
         "column3",
         "column4"
       ],
-      "row_count_estimate": null,
-      "size_bytes": 817,
-      "type_variant_id": "V0001",
-      "verdict": "conforms"
-    },
-    {
-      "bucket": "profiled",
-      "column_count": 5,
+      "normalized_column_names": [
+        "column0",
+        "column1",
+        "column2",
+        "column3",
+        "column4"
+      ],
       "column_types": {
         "column0": "int",
         "column1": "int",
@@ -86,58 +139,21 @@
         "column3": "int",
         "column4": "int"
       },
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order).",
-      "family_id": "F0001",
-      "findings": [],
-      "format_detected": "csv",
-      "has_header": false,
-      "normalized_column_names": [
-        "column0",
-        "column1",
-        "column2",
-        "column3",
-        "column4"
-      ],
-      "path": "tests/fixtures/header_chaos/numeric_header.csv",
-      "raw_column_names": [
-        "column0",
-        "column1",
-        "column2",
-        "column3",
-        "column4"
-      ],
-      "row_count_estimate": null,
-      "size_bytes": 403,
       "type_variant_id": "V0002",
-      "verdict": "conforms"
+      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order)."
     },
     {
+      "path": "tests/fixtures/header_chaos/with_header.csv",
       "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {
-        "amount": "decimal",
-        "customer_id": "int",
-        "notes": "text",
-        "order_date": "date",
-        "status": "text"
-      },
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "First member of new family 'F0002' (5 columns: customer_id, order_date, amount, status, notes).",
-      "family_id": "F0002",
+      "verdict": "conforms",
       "findings": [],
       "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
       "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "path": "tests/fixtures/header_chaos/with_header.csv",
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0002",
       "raw_column_names": [
         "customer_id",
         "order_date",
@@ -145,41 +161,22 @@
         "status",
         "notes"
       ],
-      "row_count_estimate": null,
-      "size_bytes": 861,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {
+        "customer_id": "int",
+        "order_date": "date",
+        "amount": "decimal",
+        "status": "text",
+        "notes": "text"
+      },
       "type_variant_id": "V0003",
-      "verdict": "conforms"
+      "explanation": "First member of new family 'F0002' (5 columns: customer_id, order_date, amount, status, notes)."
     }
-  ],
-  "path_expression": "tests/fixtures/header_chaos",
-  "scan_findings": [
-    {
-      "confidence": 2,
-      "expected": "date (1/2 files)",
-      "explanation": "Column 'column1' infers as different types across files in family F0001: date in 1 files, int in 1 file(s). This is especially dangerous for sequential concat operations (pandas, etc.) where type coercion can silently corrupt data.",
-      "found": "int in 1 file(s)",
-      "locus": "column 'column1' (family F0001)",
-      "reason_code": "TYPE_MISMATCH",
-      "severity": "WARN"
-    },
-    {
-      "confidence": 2,
-      "expected": "text (1/2 files)",
-      "explanation": "Column 'column3' infers as different types across files in family F0001: text in 1 files, int in 1 file(s). This is especially dangerous for sequential concat operations (pandas, etc.) where type coercion can silently corrupt data.",
-      "found": "int in 1 file(s)",
-      "locus": "column 'column3' (family F0001)",
-      "reason_code": "TYPE_MISMATCH",
-      "severity": "WARN"
-    },
-    {
-      "confidence": 2,
-      "expected": "text (1/2 files)",
-      "explanation": "Column 'column4' infers as different types across files in family F0001: text in 1 files, int in 1 file(s). This is especially dangerous for sequential concat operations (pandas, etc.) where type coercion can silently corrupt data.",
-      "found": "int in 1 file(s)",
-      "locus": "column 'column4' (family F0001)",
-      "reason_code": "TYPE_MISMATCH",
-      "severity": "WARN"
-    }
-  ],
-  "version": "0.1.0"
+  ]
 }

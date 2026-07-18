@@ -65,10 +65,18 @@ def expand_glob(path_expr: str, conn: duckdb.DuckDBPyConnection | None = None) -
         # Use DuckDB glob() — paths passed as parameter, never interpolated
         rows = conn.execute("SELECT * FROM glob(?)", [glob_expr]).fetchall()
         paths = []
+        path_expr_parts = Path(path_expr).parts
         for (p,) in rows:
             candidate = Path(p)
             if candidate.is_file():
-                paths.append(candidate.resolve())
+                parts = candidate.parts
+                has_dot_part = False
+                for part in parts:
+                    if part.startswith(".") and part not in path_expr_parts:
+                        has_dot_part = True
+                        break
+                if not has_dot_part:
+                    paths.append(candidate.resolve())
         return paths
 
     finally:

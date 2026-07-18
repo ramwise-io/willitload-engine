@@ -38,6 +38,12 @@ from willitload.tier0.duckdb_reader import expand_glob, get_file_size, profile_f
 from willitload.tier0 import parsers
 
 
+_NON_DATA_EXTENSIONS = {
+    ".schema", ".md", ".sql", ".ddl", ".py", ".sh",
+    ".yml", ".yaml", ".git", ".gitignore", ".txt"
+}
+
+
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
@@ -55,6 +61,7 @@ class ResolverConfig:
     follow_symlinks: bool = False
     # Archive nesting depth
     max_archive_depth: int = parsers.MAX_ARCHIVE_DEPTH
+    exclude_paths: list[Path] = field(default_factory=list)
 
 
 # ---------------------------------------------------------------------------
@@ -106,6 +113,9 @@ def resolve(
 
     try:
         paths = expand_glob(path_expr, conn)
+        if config.exclude_paths:
+            exclude_resolved = {p.resolve() for p in config.exclude_paths}
+            paths = [p for p in paths if p.resolve() not in exclude_resolved]
     except Exception as e:
         result.set_findings.append(
             Finding(
@@ -134,6 +144,35 @@ def resolve(
         )
         result.elapsed_ms = (time.monotonic() - t0) * 1000
         return result
+
+    # --- Step 1.5: Recursion depth check ---
+    base_dir = _get_base_dir(path_expr)
+    max_depth_seen = 0
+    deepest_path = None
+    for p in paths:
+        try:
+            rel = p.resolve().relative_to(base_dir)
+            depth = len(rel.parts) - 1
+            if depth > max_depth_seen:
+                max_depth_seen = depth
+                deepest_path = p
+        except Exception:
+            pass
+
+    if max_depth_seen > config.max_recursion_depth:
+        result.set_findings.append(
+            Finding(
+                reason_code=ReasonCode.RECURSION_DEPTH_CEILING,
+                severity=Severity.WARN,
+                locus="fileset recursion",
+                expected=f"<= {config.max_recursion_depth} levels",
+                found=f"{max_depth_seen} levels",
+                explanation=(
+                    f"Directory recursion depth exceeded the configured ceiling ({config.max_recursion_depth} levels) "
+                    f"at: {deepest_path}"
+                ),
+            )
+        )
 
     # --- Step 2: File count ceiling ---
     if len(paths) > config.file_count_ceiling:
@@ -273,6 +312,9 @@ def _profile_one(
     # Format detection (magic bytes first)
     try:
         fmt, confidence = detect_format(path, sample, encoding)
+        if path.suffix.lower() in _NON_DATA_EXTENSIONS:
+            fmt = "text"
+            confidence = 1
         pf.format_detected = fmt
         pf.format_confidence = confidence
     except Exception as e:
@@ -388,6 +430,17 @@ def verify_file_decoding(path: Path, format_detected: str, encoding: str) -> str
             return f"CORRUPT_ARCHIVE: {e}"
 
     return None
+
+
+def _get_base_dir(path_expr: str) -> Path:
+    import re
+    # Find portion of path before first glob character (*, ?, [)
+    m = re.split(r"[*?\[]", str(path_expr), maxsplit=1)
+    base_part = m[0]
+    path = Path(base_part)
+    while not path.is_dir() and path.parent != path:
+        path = path.parent
+    return path.resolve()
 
 
 def _dispatch_profiler(

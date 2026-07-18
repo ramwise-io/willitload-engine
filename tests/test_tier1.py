@@ -151,9 +151,9 @@ class TestFamilyClustering:
         assert result.file_family_ids[1] is not None
 
     def test_scan_column_drift_families(self):
-        """column_drift fixture should produce 5 families (clean, extra, missing, renamed, schema)."""
+        """column_drift fixture should produce 4 families (clean, extra, missing, renamed; schema is catalogued)."""
         r = scan(str(FIXTURES / "column_drift"))
-        assert len(r.families) == 5, f"Expected 5 families, got {len(r.families)}: {[f.family_id for f in r.families]}"
+        assert len(r.families) == 4, f"Expected 4 families, got {len(r.families)}: {[f.family_id for f in r.families]}"
 
     def test_scan_clean_conforming_one_family(self):
         """All CSVs in clean_conforming should cluster into one family (plus one for .schema file)."""

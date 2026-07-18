@@ -80,4 +80,5 @@ def parse_flat_schema(path: str | Path) -> BaselineFingerprint:
     return BaselineFingerprint(
         source_description=f"flat schema file: {path}",
         columns=columns,
+        source_path=path,
     )

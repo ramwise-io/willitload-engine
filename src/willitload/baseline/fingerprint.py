@@ -13,6 +13,7 @@ can be checked strictly today and loosely tomorrow without editing it.
 from __future__ import annotations
 
 from dataclasses import dataclass, field
+from pathlib import Path
 
 from willitload.types import TypeClass
 
@@ -40,6 +41,7 @@ class BaselineFingerprint:
     source_description: str
     """Human-readable description of where this fingerprint came from."""
     columns: list[BaselineColumn]
+    source_path: Path | None = None
 
     @property
     def name_set(self) -> frozenset[str]:

@@ -94,4 +94,5 @@ def parse_from_scan_json(path: str | Path) -> BaselineFingerprint:
     return BaselineFingerprint(
         source_description=f"prior scan JSON: {path}",
         columns=columns,
+        source_path=path,
     )

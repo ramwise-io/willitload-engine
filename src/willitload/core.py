@@ -259,6 +259,13 @@ def check(
     """
     t0 = time.monotonic()
 
+    if baseline.source_path:
+        import copy
+        config = copy.copy(config or ResolverConfig())
+        baseline_path = Path(baseline.source_path).resolve()
+        if baseline_path not in config.exclude_paths:
+            config.exclude_paths = list(config.exclude_paths) + [baseline_path]
+
     # Run the full scan pipeline first
     scan_result = scan(path_expr, config)
 

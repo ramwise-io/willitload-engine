@@ -1,16 +1,17 @@
 {
+  "version": "0.1.0",
+  "path_expression": "tests/fixtures/type_drift",
+  "elapsed_ms": 0.0,
   "accounting": {
-    "catalogued": 0,
-    "degraded": 0,
     "files_seen": 7,
     "profiled": 7,
-    "reconciles": true,
-    "refused": 0
+    "degraded": 0,
+    "catalogued": 0,
+    "refused": 0,
+    "reconciles": true
   },
-  "elapsed_ms": 0.0,
   "families": [
     {
-      "column_count": 5,
       "family_id": "F0001",
       "file_count": 7,
       "representative_columns": [
@@ -20,291 +21,283 @@
         "status",
         "notes"
       ],
+      "column_count": 5,
       "type_variants": 3,
       "within_family_findings": []
     }
   ],
-  "file_verdicts": [
-    {
-      "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {
-        "amount": "decimal",
-        "customer_id": "int",
-        "notes": "text",
-        "order_date": "date",
-        "status": "text"
-      },
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "First member of new family 'F0001' (5 columns: customer_id, order_date, amount, status, notes).",
-      "family_id": "F0001",
-      "findings": [],
-      "format_detected": "csv",
-      "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "path": "tests/fixtures/type_drift/orders_001.csv",
-      "raw_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "row_count_estimate": null,
-      "size_bytes": 861,
-      "type_variant_id": "V0001",
-      "verdict": "conforms"
-    },
-    {
-      "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {
-        "amount": "decimal",
-        "customer_id": "int",
-        "notes": "text",
-        "order_date": "date",
-        "status": "text"
-      },
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order).",
-      "family_id": "F0001",
-      "findings": [],
-      "format_detected": "csv",
-      "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "path": "tests/fixtures/type_drift/orders_002.csv",
-      "raw_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "row_count_estimate": null,
-      "size_bytes": 861,
-      "type_variant_id": "V0001",
-      "verdict": "conforms"
-    },
-    {
-      "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {
-        "amount": "decimal",
-        "customer_id": "int",
-        "notes": "text",
-        "order_date": "date",
-        "status": "text"
-      },
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order).",
-      "family_id": "F0001",
-      "findings": [],
-      "format_detected": "csv",
-      "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "path": "tests/fixtures/type_drift/orders_003.csv",
-      "raw_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "row_count_estimate": null,
-      "size_bytes": 861,
-      "type_variant_id": "V0001",
-      "verdict": "conforms"
-    },
-    {
-      "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {
-        "amount": "decimal",
-        "customer_id": "int",
-        "notes": "text",
-        "order_date": "date",
-        "status": "text"
-      },
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order).",
-      "family_id": "F0001",
-      "findings": [],
-      "format_detected": "csv",
-      "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "path": "tests/fixtures/type_drift/orders_004.csv",
-      "raw_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "row_count_estimate": null,
-      "size_bytes": 861,
-      "type_variant_id": "V0001",
-      "verdict": "conforms"
-    },
-    {
-      "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {
-        "amount": "decimal",
-        "customer_id": "int",
-        "notes": "text",
-        "order_date": "date",
-        "status": "text"
-      },
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order).",
-      "family_id": "F0001",
-      "findings": [],
-      "format_detected": "csv",
-      "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "path": "tests/fixtures/type_drift/orders_005.csv",
-      "raw_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "row_count_estimate": null,
-      "size_bytes": 861,
-      "type_variant_id": "V0001",
-      "verdict": "conforms"
-    },
-    {
-      "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {
-        "amount": "text",
-        "customer_id": "int",
-        "notes": "text",
-        "order_date": "date",
-        "status": "text"
-      },
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order).",
-      "family_id": "F0001",
-      "findings": [],
-      "format_detected": "csv",
-      "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "path": "tests/fixtures/type_drift/orders_amount_as_text.csv",
-      "raw_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "row_count_estimate": null,
-      "size_bytes": 881,
-      "type_variant_id": "V0002",
-      "verdict": "conforms"
-    },
-    {
-      "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {
-        "amount": "decimal",
-        "customer_id": "text",
-        "notes": "text",
-        "order_date": "date",
-        "status": "text"
-      },
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order).",
-      "family_id": "F0001",
-      "findings": [],
-      "format_detected": "csv",
-      "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "path": "tests/fixtures/type_drift/orders_id_as_text.csv",
-      "raw_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "row_count_estimate": null,
-      "size_bytes": 961,
-      "type_variant_id": "V0003",
-      "verdict": "conforms"
-    }
-  ],
-  "path_expression": "tests/fixtures/type_drift",
   "scan_findings": [
     {
-      "confidence": 7,
-      "expected": "int (6/7 files)",
-      "explanation": "Column 'customer_id' infers as different types across files in family F0001: int in 6 files, text in 1 file(s). This is especially dangerous for sequential concat operations (pandas, etc.) where type coercion can silently corrupt data.",
-      "found": "text in 1 file(s)",
-      "locus": "column 'customer_id' (family F0001)",
       "reason_code": "TYPE_MISMATCH",
-      "severity": "WARN"
+      "severity": "WARN",
+      "locus": "column 'customer_id' (family F0001)",
+      "expected": "int (6/7 files)",
+      "found": "text in 1 file(s)",
+      "explanation": "Column 'customer_id' infers as different types across files in family F0001: int in 6 files, text in 1 file(s). This is especially dangerous for sequential concat operations (pandas, etc.) where type coercion can silently corrupt data.",
+      "confidence": 7
     },
     {
-      "confidence": 7,
-      "expected": "decimal (6/7 files)",
-      "explanation": "Column 'amount' infers as different types across files in family F0001: decimal in 6 files, text in 1 file(s). This is especially dangerous for sequential concat operations (pandas, etc.) where type coercion can silently corrupt data.",
-      "found": "text in 1 file(s)",
-      "locus": "column 'amount' (family F0001)",
       "reason_code": "TYPE_MISMATCH",
-      "severity": "WARN"
+      "severity": "WARN",
+      "locus": "column 'amount' (family F0001)",
+      "expected": "decimal (6/7 files)",
+      "found": "text in 1 file(s)",
+      "explanation": "Column 'amount' infers as different types across files in family F0001: decimal in 6 files, text in 1 file(s). This is especially dangerous for sequential concat operations (pandas, etc.) where type coercion can silently corrupt data.",
+      "confidence": 7
     }
   ],
-  "version": "0.1.0"
+  "file_verdicts": [
+    {
+      "path": "tests/fixtures/type_drift/orders_001.csv",
+      "bucket": "profiled",
+      "verdict": "conforms",
+      "findings": [],
+      "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": true,
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {
+        "customer_id": "int",
+        "order_date": "date",
+        "amount": "decimal",
+        "status": "text",
+        "notes": "text"
+      },
+      "type_variant_id": "V0001",
+      "explanation": "First member of new family 'F0001' (5 columns: customer_id, order_date, amount, status, notes)."
+    },
+    {
+      "path": "tests/fixtures/type_drift/orders_002.csv",
+      "bucket": "profiled",
+      "verdict": "conforms",
+      "findings": [],
+      "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": true,
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {
+        "customer_id": "int",
+        "order_date": "date",
+        "amount": "decimal",
+        "status": "text",
+        "notes": "text"
+      },
+      "type_variant_id": "V0001",
+      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order)."
+    },
+    {
+      "path": "tests/fixtures/type_drift/orders_003.csv",
+      "bucket": "profiled",
+      "verdict": "conforms",
+      "findings": [],
+      "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": true,
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {
+        "customer_id": "int",
+        "order_date": "date",
+        "amount": "decimal",
+        "status": "text",
+        "notes": "text"
+      },
+      "type_variant_id": "V0001",
+      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order)."
+    },
+    {
+      "path": "tests/fixtures/type_drift/orders_004.csv",
+      "bucket": "profiled",
+      "verdict": "conforms",
+      "findings": [],
+      "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": true,
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {
+        "customer_id": "int",
+        "order_date": "date",
+        "amount": "decimal",
+        "status": "text",
+        "notes": "text"
+      },
+      "type_variant_id": "V0001",
+      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order)."
+    },
+    {
+      "path": "tests/fixtures/type_drift/orders_005.csv",
+      "bucket": "profiled",
+      "verdict": "conforms",
+      "findings": [],
+      "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": true,
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {
+        "customer_id": "int",
+        "order_date": "date",
+        "amount": "decimal",
+        "status": "text",
+        "notes": "text"
+      },
+      "type_variant_id": "V0001",
+      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order)."
+    },
+    {
+      "path": "tests/fixtures/type_drift/orders_amount_as_text.csv",
+      "bucket": "profiled",
+      "verdict": "conforms",
+      "findings": [],
+      "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": true,
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {
+        "customer_id": "int",
+        "order_date": "date",
+        "amount": "text",
+        "status": "text",
+        "notes": "text"
+      },
+      "type_variant_id": "V0002",
+      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order)."
+    },
+    {
+      "path": "tests/fixtures/type_drift/orders_id_as_text.csv",
+      "bucket": "profiled",
+      "verdict": "conforms",
+      "findings": [],
+      "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": true,
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {
+        "customer_id": "text",
+        "order_date": "date",
+        "amount": "decimal",
+        "status": "text",
+        "notes": "text"
+      },
+      "type_variant_id": "V0003",
+      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order)."
+    }
+  ]
 }

@@ -20,11 +20,13 @@ def parse_ddl_schema(path_or_text: str | Path) -> BaselineFingerprint:
     source_desc = f"DDL schema: {path_or_text_str}"
 
     content = ""
+    source_path = None
     try:
-        if Path(path_or_text_str).exists():
+        if Path(path_or_text_str).is_file():
             with open(path_or_text_str, "r", encoding="utf-8", errors="replace") as f:
                 content = f.read()
                 source_desc = f"DDL schema file: {path_or_text_str}"
+                source_path = Path(path_or_text_str)
         else:
             content = path_or_text_str
     except Exception:
@@ -116,4 +118,5 @@ def parse_ddl_schema(path_or_text: str | Path) -> BaselineFingerprint:
     return BaselineFingerprint(
         columns=columns,
         source_description=source_desc,
+        source_path=source_path,
     )

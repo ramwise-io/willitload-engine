@@ -1,16 +1,17 @@
 {
+  "version": "0.1.0",
+  "path_expression": "tests/fixtures/ragged",
+  "elapsed_ms": 0.0,
   "accounting": {
-    "catalogued": 0,
-    "degraded": 0,
     "files_seen": 3,
     "profiled": 3,
-    "reconciles": true,
-    "refused": 0
+    "degraded": 0,
+    "catalogued": 0,
+    "refused": 0,
+    "reconciles": true
   },
-  "elapsed_ms": 0.0,
   "families": [
     {
-      "column_count": 5,
       "family_id": "F0001",
       "file_count": 3,
       "representative_columns": [
@@ -20,140 +21,44 @@
         "status",
         "notes"
       ],
+      "column_count": 5,
       "type_variants": 1,
       "within_family_findings": []
     }
   ],
+  "scan_findings": [],
   "file_verdicts": [
     {
-      "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {},
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "First member of new family 'F0001' (5 columns: customer_id, order_date, amount, status, notes).",
-      "family_id": "F0001",
-      "findings": [
-        {
-          "confidence": 1,
-          "expected": "5",
-          "explanation": "1 row(s) have a column count that deviates from the file's mode (5 columns). Likely cause: unescaped delimiter or embedded newline.",
-          "found": "6",
-          "locus": "row 12",
-          "reason_code": "RAGGED_ROWS",
-          "severity": "ERROR"
-        },
-        {
-          "confidence": 2,
-          "expected": "one stable column-count regime",
-          "explanation": "File contains 2 distinct stable column-count regimes, suggesting multiple logical record types stacked vertically. Regimes: 5 columns \u00d7 10 rows starting at relative row 0; 5 columns \u00d7 9 rows starting at relative row 11.",
-          "found": "2 distinct regimes",
-          "locus": "file structure",
-          "reason_code": "MULTI_RECORD",
-          "severity": "WARN"
-        }
-      ],
-      "format_detected": "csv",
-      "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
       "path": "tests/fixtures/ragged/ragged_rows.csv",
-      "raw_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "row_count_estimate": null,
-      "size_bytes": 870,
-      "type_variant_id": null,
-      "verdict": "broken"
-    },
-    {
       "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {},
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order).",
-      "family_id": "F0001",
+      "verdict": "broken",
       "findings": [
         {
-          "confidence": 1,
+          "reason_code": "RAGGED_ROWS",
+          "severity": "ERROR",
+          "locus": "row 12",
           "expected": "5",
-          "explanation": "Final sampled row (row 22) has 2 columns vs expected 5. Possible totals/summary row appended to the data.",
-          "found": "2",
-          "locus": "row 22",
-          "reason_code": "TRAILING_SUMMARY",
-          "severity": "WARN"
-        }
-      ],
-      "format_detected": "csv",
-      "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "path": "tests/fixtures/ragged/trailing_summary.csv",
-      "raw_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "row_count_estimate": null,
-      "size_bytes": 877,
-      "type_variant_id": null,
-      "verdict": "conforms"
-    },
-    {
-      "bucket": "profiled",
-      "column_count": 5,
-      "column_types": {},
-      "delimiter": ",",
-      "encoding": "utf-8",
-      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order).",
-      "family_id": "F0001",
-      "findings": [
-        {
-          "confidence": 1,
-          "expected": "5",
-          "explanation": "Final sampled row (row 21) has 4 columns vs expected 5. Possible totals/summary row appended to the data.",
-          "found": "4",
-          "locus": "row 21",
-          "reason_code": "TRAILING_SUMMARY",
-          "severity": "WARN"
+          "found": "6",
+          "explanation": "1 row(s) have a column count that deviates from the file's mode (5 columns). Likely cause: unescaped delimiter or embedded newline.",
+          "confidence": 1
         },
         {
-          "confidence": 1,
-          "expected": "newline-terminated final row",
-          "explanation": "File does not end with a newline. The final row may be truncated or the file may be incomplete.",
-          "found": "partial row at EOF",
-          "locus": "EOF",
-          "reason_code": "TRUNCATED",
-          "severity": "ERROR"
+          "reason_code": "MULTI_RECORD",
+          "severity": "WARN",
+          "locus": "file structure",
+          "expected": "one stable column-count regime",
+          "found": "2 distinct regimes",
+          "explanation": "File contains 2 distinct stable column-count regimes, suggesting multiple logical record types stacked vertically. Regimes: 5 columns \u00d7 10 rows starting at relative row 0; 5 columns \u00d7 9 rows starting at relative row 11.",
+          "confidence": 2
         }
       ],
       "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
       "has_header": true,
-      "normalized_column_names": [
-        "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "path": "tests/fixtures/ragged/truncated.csv",
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
       "raw_column_names": [
         "customer_id",
         "order_date",
@@ -161,13 +66,105 @@
         "status",
         "notes"
       ],
-      "row_count_estimate": null,
-      "size_bytes": 824,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {},
       "type_variant_id": null,
-      "verdict": "broken"
+      "explanation": "First member of new family 'F0001' (5 columns: customer_id, order_date, amount, status, notes)."
+    },
+    {
+      "path": "tests/fixtures/ragged/trailing_summary.csv",
+      "bucket": "profiled",
+      "verdict": "conforms",
+      "findings": [
+        {
+          "reason_code": "TRAILING_SUMMARY",
+          "severity": "WARN",
+          "locus": "row 22",
+          "expected": "5",
+          "found": "2",
+          "explanation": "Final sampled row (row 22) has 2 columns vs expected 5. Possible totals/summary row appended to the data.",
+          "confidence": 1
+        }
+      ],
+      "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": true,
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {},
+      "type_variant_id": null,
+      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order)."
+    },
+    {
+      "path": "tests/fixtures/ragged/truncated.csv",
+      "bucket": "profiled",
+      "verdict": "broken",
+      "findings": [
+        {
+          "reason_code": "TRAILING_SUMMARY",
+          "severity": "WARN",
+          "locus": "row 21",
+          "expected": "5",
+          "found": "4",
+          "explanation": "Final sampled row (row 21) has 4 columns vs expected 5. Possible totals/summary row appended to the data.",
+          "confidence": 1
+        },
+        {
+          "reason_code": "TRUNCATED",
+          "severity": "ERROR",
+          "locus": "EOF",
+          "expected": "newline-terminated final row",
+          "found": "partial row at EOF",
+          "explanation": "File does not end with a newline. The final row may be truncated or the file may be incomplete.",
+          "confidence": 1
+        }
+      ],
+      "format_detected": "csv",
+      "encoding": "utf-8",
+      "delimiter": ",",
+      "has_header": true,
+      "column_count": 5,
+      "row_count_estimate": null,
+      "family_id": "F0001",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "column_types": {},
+      "type_variant_id": null,
+      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order)."
     }
-  ],
-  "path_expression": "tests/fixtures/ragged",
-  "scan_findings": [],
-  "version": "0.1.0"
+  ]
 }

@@ -79,4 +79,5 @@ def parse_golden_file(path: str | Path) -> BaselineFingerprint:
     return BaselineFingerprint(
         source_description=f"golden sample file: {path} (format: {fmt})",
         columns=columns,
+        source_path=path,
     )

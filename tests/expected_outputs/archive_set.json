@@ -1,75 +1,73 @@
 {
+  "version": "0.1.0",
+  "path_expression": "tests/fixtures/archive_set",
+  "elapsed_ms": 0.0,
   "accounting": {
-    "catalogued": 2,
-    "degraded": 0,
     "files_seen": 2,
     "profiled": 0,
-    "reconciles": true,
-    "refused": 0
+    "degraded": 0,
+    "catalogued": 2,
+    "refused": 0,
+    "reconciles": true
   },
-  "elapsed_ms": 0.0,
   "families": [],
+  "scan_findings": [],
   "file_verdicts": [
     {
+      "path": "tests/fixtures/archive_set/archive_multi.zip",
       "bucket": "catalogued",
-      "column_count": null,
-      "column_types": {},
-      "delimiter": null,
-      "encoding": "latin-1",
-      "explanation": "No columns detected; not assigned to a family.",
-      "family_id": null,
+      "verdict": "conforms",
       "findings": [
         {
-          "confidence": 1,
-          "expected": "UTF-8, UTF-16, or explicit encoding",
-          "explanation": "File only decoded successfully under Latin-1. This is a deterministic finding \u2014 no encoding guessing was used. Structural profile may be incomplete if encoding is incorrect.",
-          "found": "latin-1 (fallback)",
-          "locus": "file encoding",
           "reason_code": "ENCODING_FALLBACK",
-          "severity": "WARN"
+          "severity": "WARN",
+          "locus": "file encoding",
+          "expected": "UTF-8, UTF-16, or explicit encoding",
+          "found": "latin-1 (fallback)",
+          "explanation": "File only decoded successfully under Latin-1. This is a deterministic finding \u2014 no encoding guessing was used. Structural profile may be incomplete if encoding is incorrect.",
+          "confidence": 1
         }
       ],
       "format_detected": "zip",
+      "encoding": "latin-1",
+      "delimiter": null,
       "has_header": null,
-      "normalized_column_names": [],
-      "path": "tests/fixtures/archive_set/archive_multi.zip",
-      "raw_column_names": [],
+      "column_count": null,
       "row_count_estimate": null,
-      "size_bytes": 1120,
+      "family_id": null,
+      "raw_column_names": [],
+      "normalized_column_names": [],
+      "column_types": {},
       "type_variant_id": null,
-      "verdict": "conforms"
+      "explanation": "No columns detected; not assigned to a family."
     },
     {
+      "path": "tests/fixtures/archive_set/archive_normal.zip",
       "bucket": "catalogued",
-      "column_count": null,
-      "column_types": {},
-      "delimiter": null,
-      "encoding": "latin-1",
-      "explanation": "No columns detected; not assigned to a family.",
-      "family_id": null,
+      "verdict": "conforms",
       "findings": [
         {
-          "confidence": 1,
-          "expected": "UTF-8, UTF-16, or explicit encoding",
-          "explanation": "File only decoded successfully under Latin-1. This is a deterministic finding \u2014 no encoding guessing was used. Structural profile may be incomplete if encoding is incorrect.",
-          "found": "latin-1 (fallback)",
-          "locus": "file encoding",
           "reason_code": "ENCODING_FALLBACK",
-          "severity": "WARN"
+          "severity": "WARN",
+          "locus": "file encoding",
+          "expected": "UTF-8, UTF-16, or explicit encoding",
+          "found": "latin-1 (fallback)",
+          "explanation": "File only decoded successfully under Latin-1. This is a deterministic finding \u2014 no encoding guessing was used. Structural profile may be incomplete if encoding is incorrect.",
+          "confidence": 1
         }
       ],
       "format_detected": "zip",
+      "encoding": "latin-1",
+      "delimiter": null,
       "has_header": null,
-      "normalized_column_names": [],
-      "path": "tests/fixtures/archive_set/archive_normal.zip",
-      "raw_column_names": [],
+      "column_count": null,
       "row_count_estimate": null,
-      "size_bytes": 567,
+      "family_id": null,
+      "raw_column_names": [],
+      "normalized_column_names": [],
+      "column_types": {},
       "type_variant_id": null,
-      "verdict": "conforms"
+      "explanation": "No columns detected; not assigned to a family."
     }
-  ],
-  "path_expression": "tests/fixtures/archive_set",
-  "scan_findings": [],
-  "version": "0.1.0"
+  ]
 }

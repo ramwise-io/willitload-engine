@@ -210,6 +210,7 @@ def project_severity(
     if key_none in SEVERITY_PROJECTION:
         return SEVERITY_PROJECTION[key_none]
     # Safe default — should not be reached if projection table is complete
+    assert False, f"Missing severity projection for {code} under {mode}"
     return Severity.WARN
 
 

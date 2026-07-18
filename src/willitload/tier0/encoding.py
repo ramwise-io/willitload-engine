@@ -77,7 +77,14 @@ def detect_encoding(path_or_sample: str | bytes) -> tuple[str, bool]:
     try:
         sample.decode("utf-8", errors="strict")
         return ("utf-8", False)
-    except (UnicodeDecodeError, ValueError):
+    except UnicodeDecodeError as e:
+        if len(sample) - e.start <= 4:
+            try:
+                sample[:e.start].decode("utf-8", errors="strict")
+                return ("utf-8", False)
+            except UnicodeDecodeError:
+                pass
+    except ValueError:
         pass
 
     # Step 3: UTF-16 LE/BE null-byte pattern (without BOM)
@@ -85,14 +92,28 @@ def detect_encoding(path_or_sample: str | bytes) -> tuple[str, bool]:
         try:
             sample.decode("utf-16-le", errors="strict")
             return ("utf-16-le", False)
-        except (UnicodeDecodeError, ValueError):
+        except UnicodeDecodeError as e:
+            if len(sample) - e.start <= 4:
+                try:
+                    sample[:e.start].decode("utf-16-le", errors="strict")
+                    return ("utf-16-le", False)
+                except UnicodeDecodeError:
+                    pass
+        except ValueError:
             pass
 
     if _has_utf16_null_pattern(sample, "be"):
         try:
             sample.decode("utf-16-be", errors="strict")
             return ("utf-16-be", False)
-        except (UnicodeDecodeError, ValueError):
+        except UnicodeDecodeError as e:
+            if len(sample) - e.start <= 4:
+                try:
+                    sample[:e.start].decode("utf-16-be", errors="strict")
+                    return ("utf-16-be", False)
+                except UnicodeDecodeError:
+                    pass
+        except ValueError:
             pass
 
     # Step 4: Latin-1 last resort (always succeeds at the byte level)
