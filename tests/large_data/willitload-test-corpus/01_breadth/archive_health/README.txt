@@ -1,0 +1,1 @@
+healthy.csv.gz decompresses+decodes clean. corrupt_truncated.csv.gz is a cut-off gzip (CORRUPT_ARCHIVE). gz_decode_error.csv.gz decompresses but has bad bytes (DECODE_ERROR). normal.zip is fine; nested.zip holds a zip.

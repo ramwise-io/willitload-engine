@@ -1,0 +1,6 @@
+id,text
+customer,text
+sku,text
+qty,int
+price,decimal
+ts,date

@@ -1,0 +1,3 @@
+id,int
+qty,int
+price,decimal

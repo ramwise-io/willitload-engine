@@ -1,0 +1,1 @@
+A realistic Acme vendor feed: 10 clean daily files, then day 11 adds a column, day 12 renames one, day 13 corrupts unit_price with a '$', day 14 is truncated. Run: willitload check 02_demo/acme_daily_orders --against 02_demo/expected.schema --align name

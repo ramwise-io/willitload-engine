@@ -1,0 +1,6 @@
+order_id,int
+customer_id,int
+sku,text
+quantity,int
+unit_price,decimal
+order_date,date

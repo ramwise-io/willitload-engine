@@ -1,0 +1,13 @@
+# Keep all fixture text files LF so byte-sizes and hashes are portable across OSes.
+# (The engine's own regression snapshots must not bake in CRLF byte counts.)
+*.csv   text eol=lf
+*.jsonl text eol=lf
+*.json  text eol=lf
+*.schema text eol=lf
+*.md    text eol=lf
+*.txt   text eol=lf
+# Binary fixtures — never touch.
+*.gz    binary
+*.zip   binary
+*.parquet binary
+*.sqlite binary

@@ -1,0 +1,4 @@
+order_id,customer_id,sku,quantity,unit_price,order_date
+6400,198,SKU-1,1,9.99,2026-02-14
+6401,415,SKU-1,1,9.99,2026-02-14
+6402,511,SKU-1,1,9.99,2026-02-14
