@@ -1,5 +1,6 @@
 duckdb>=0.10
 rich>=13
+openpyxl>=3.1.0
 
 [dev]
 pytest>=7

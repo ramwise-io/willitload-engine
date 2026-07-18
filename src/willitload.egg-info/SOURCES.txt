@@ -1,5 +1,7 @@
+README.md
 pyproject.toml
 src/willitload/__init__.py
+src/willitload/__main__.py
 src/willitload/check.py
 src/willitload/cli.py
 src/willitload/core.py
@@ -30,5 +32,11 @@ src/willitload/tier1/cluster.py
 src/willitload/tier2/__init__.py
 src/willitload/tier2/infer.py
 src/willitload/tier2/sampler.py
+tests/test_baseline.py
+tests/test_check.py
+tests/test_expected_outputs.py
 tests/test_models.py
+tests/test_tier0.py
+tests/test_tier1.py
+tests/test_tier2.py
 tests/test_types.py

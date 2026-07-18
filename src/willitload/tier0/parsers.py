@@ -208,3 +208,124 @@ def profile_zip(
         pf.error = f"ZIP parser error: {e}"
 
     return members
+
+
+def profile_excel(path: Path, pf: PhysicalFile) -> None:
+    """
+    Profile an Excel file (.xlsx) using openpyxl in read-only, data-only mode.
+    Extracts sheet names, column headers, and infers column types from a row sample.
+    """
+    try:
+        import openpyxl
+        from willitload.types import TypeClass
+
+        # Open workbook in read-only and data-only (resolves formulas) mode
+        wb = openpyxl.load_workbook(filename=str(path), read_only=True, data_only=True)
+        sheet_names = wb.sheetnames
+
+        if not sheet_names:
+            pf.bucket = Bucket.DEGRADED
+            pf.error = "Excel file contains no sheets"
+            wb.close()
+            return
+
+        # Profile the first sheet
+        ws = wb[sheet_names[0]]
+
+        # Read first row for headers
+        row_iter = ws.iter_rows(values_only=True)
+        try:
+            first_row = next(row_iter, None)
+        except Exception:
+            first_row = None
+
+        if not first_row:
+            pf.bucket = Bucket.DEGRADED
+            pf.error = "Excel sheet is empty"
+            wb.close()
+            return
+
+        # Extract column headers
+        raw_names = []
+        for cell in first_row:
+            if cell is None:
+                raw_names.append("")
+            else:
+                raw_names.append(str(cell).strip())
+
+        # Trim trailing empty columns
+        while raw_names and raw_names[-1] == "":
+            raw_names.pop()
+
+        if not raw_names:
+            pf.bucket = Bucket.DEGRADED
+            pf.error = "Excel sheet has no columns"
+            wb.close()
+            return
+
+        column_count = len(raw_names)
+
+        # Sample up to 100 data rows to infer types
+        sample_rows = []
+        for _ in range(100):
+            try:
+                row = next(row_iter, None)
+                if row is None:
+                    break
+                sample_rows.append(row[:column_count])
+            except Exception:
+                break
+
+        wb.close()
+
+        # Type inference per column based on cell values
+        col_types = {}
+        for col_idx in range(column_count):
+            col_name = raw_names[col_idx]
+            if not col_name:
+                col_name = f"column{col_idx}"
+                raw_names[col_idx] = col_name
+
+            values = [
+                row[col_idx]
+                for row in sample_rows
+                if col_idx < len(row) and row[col_idx] is not None
+            ]
+
+            from datetime import datetime, date
+            types_seen = set()
+            for v in values:
+                if isinstance(v, bool):
+                    types_seen.add(TypeClass.BOOL)
+                elif isinstance(v, int):
+                    types_seen.add(TypeClass.INT)
+                elif isinstance(v, float):
+                    types_seen.add(TypeClass.DECIMAL)
+                elif isinstance(v, (datetime, date)):
+                    # openpyxl returns datetime objects for date/time columns
+                    types_seen.add(TypeClass.TIMESTAMP)
+                else:
+                    types_seen.add(TypeClass.TEXT)
+
+            if not types_seen:
+                inferred = TypeClass.ANY
+            elif len(types_seen) == 1:
+                inferred = list(types_seen)[0]
+            else:
+                if types_seen == {TypeClass.INT, TypeClass.DECIMAL}:
+                    inferred = TypeClass.DECIMAL
+                else:
+                    inferred = TypeClass.TEXT
+
+            col_types[col_name] = inferred
+
+        # Populate PhysicalFile properties
+        pf.raw_column_names = raw_names
+        pf.column_count = column_count
+        pf.has_header = True
+        pf.column_types = col_types
+        pf.bucket = Bucket.PROFILED
+
+    except Exception as e:
+        pf.bucket = Bucket.DEGRADED
+        pf.error = f"Excel parsing error: {e}"

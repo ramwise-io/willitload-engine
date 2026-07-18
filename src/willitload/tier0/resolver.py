@@ -328,9 +328,7 @@ def _dispatch_profiler(
             _ = members  # future: recurse into members
 
         case "excel":
-            # Excel profiling deferred to fast-follow (openpyxl not in v1 deps)
-            pf.bucket = Bucket.CATALOGUED
-            pf.error = "Excel profiling deferred (fast-follow)"
+            parsers.profile_excel(path, pf)
 
         case "gzip":
             # gzip: DuckDB can read gzipped CSVs — attempt transparent read

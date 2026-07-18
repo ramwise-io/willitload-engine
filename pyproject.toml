@@ -26,6 +26,7 @@ classifiers = [
 dependencies = [
     "duckdb>=0.10",
     "rich>=13",
+    "openpyxl>=3.1.0",
 ]
 
 [project.optional-dependencies]

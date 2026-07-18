@@ -140,6 +140,24 @@ def _load_baseline(path_str: str):
         except ValueError:
             pass  # fall through to golden-file
 
+    # SQL/DDL -> try DDL parsing
+    if suffix in (".sql", ".ddl"):
+        from willitload.baseline.ddl import parse_ddl_schema
+        try:
+            return parse_ddl_schema(path)
+        except ValueError:
+            pass  # fall through to golden-file
+
+    # Peek inside file to see if it is DDL (starts with CREATE)
+    try:
+        with open(path, "r", encoding="utf-8", errors="replace") as f:
+            peek = f.read(200).strip().upper()
+        if peek.startswith("CREATE"):
+            from willitload.baseline.ddl import parse_ddl_schema
+            return parse_ddl_schema(path)
+    except Exception:
+        pass
+
     # Known schema file extensions -> flat schema
     if suffix in (".schema", ".txt", ".csv", ""):
         try:
