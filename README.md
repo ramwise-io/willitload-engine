@@ -77,6 +77,8 @@ graph TD
 ```
 
 ### In Scope
+- **Formats Supported:** CSV, TSV, Parquet, JSON, JSONL, SQLite, XML, and Excel (`.xlsx`).
+- **Baselines Supported:** Flat Schema files (`name,type`), Prior Scan JSON, Golden Sample files, and SQL DDL scripts (`CREATE TABLE`).
 - **Acquisition Facts:** Verification of read access, BOM encoding, and compression status.
 - **Physical Layout:** Delimiter detection, quoting convention, newlines, and truncation.
 - **Structural Identity:** Column count, order, and canonicalized name matching.
@@ -104,9 +106,11 @@ pip install -e .
 willitload scan ./data/
 ```
 
-#### Check a directory against a schema contract:
+#### Check a directory against a schema contract (flat schema or SQL DDL):
 ```bash
 willitload check ./data/ --against ./baseline.schema --align name
+# Or using a SQL DDL CREATE TABLE statement:
+willitload check ./data/ --against ./schema.sql --align name
 ```
 
 ### 3. Programmatic Python API
