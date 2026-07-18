@@ -1,0 +1,6 @@
+duckdb>=0.10
+rich>=13
+
+[dev]
+pytest>=7
+pytest-cov

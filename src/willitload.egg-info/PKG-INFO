@@ -1,0 +1,23 @@
+Metadata-Version: 2.4
+Name: willitload
+Version: 0.1.0
+Summary: Fileset structural pre-flight for bulk loads — finds the one bad file before your loader does.
+Author: Ramji
+License: Apache-2.0
+Keywords: data-engineering,etl,bulk-load,data-quality,pre-flight,duckdb
+Classifier: Development Status :: 3 - Alpha
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: Apache Software License
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Classifier: Topic :: Utilities
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+Requires-Dist: duckdb>=0.10
+Requires-Dist: rich>=13
+Provides-Extra: dev
+Requires-Dist: pytest>=7; extra == "dev"
+Requires-Dist: pytest-cov; extra == "dev"

@@ -1,0 +1,5 @@
+customer_id,int
+order_date,date
+amount,decimal
+status,text
+notes,text

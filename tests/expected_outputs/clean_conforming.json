@@ -1,0 +1,811 @@
+{
+  "accounting": {
+    "catalogued": 0,
+    "degraded": 0,
+    "files_seen": 21,
+    "profiled": 21,
+    "reconciles": true,
+    "refused": 0
+  },
+  "elapsed_ms": 0.0,
+  "families": [
+    {
+      "column_count": 2,
+      "family_id": "F0001",
+      "file_count": 1,
+      "representative_columns": [
+        "customer_id",
+        "int"
+      ],
+      "type_variants": 1,
+      "within_family_findings": []
+    },
+    {
+      "column_count": 5,
+      "family_id": "F0002",
+      "file_count": 20,
+      "representative_columns": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "type_variants": 1,
+      "within_family_findings": []
+    }
+  ],
+  "file_verdicts": [
+    {
+      "bucket": "profiled",
+      "column_count": 2,
+      "column_types": {
+        "customer_id": "text",
+        "int": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "First member of new family 'F0001' (2 columns: customer_id, int).",
+      "family_id": "F0001",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "int"
+      ],
+      "path": "tests/fixtures/clean_conforming/baseline.schema",
+      "raw_column_names": [
+        "customer_id",
+        "int"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 73,
+      "type_variant_id": "V0001",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "First member of new family 'F0002' (5 columns: customer_id, order_date, amount, status, notes).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_001.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_002.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_003.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_004.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_005.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_006.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_007.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_008.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_009.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_010.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_011.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_012.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_013.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_014.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_015.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_016.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_017.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_018.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_019.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 5,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "notes": "text",
+        "order_date": "date",
+        "status": "text"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0002': exact structural match (5 columns, same order).",
+      "family_id": "F0002",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "path": "tests/fixtures/clean_conforming/orders_020.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount",
+        "status",
+        "notes"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 2102,
+      "type_variant_id": "V0002",
+      "verdict": "conforms"
+    }
+  ],
+  "path_expression": "tests/fixtures/clean_conforming",
+  "scan_findings": [],
+  "version": "0.1.0"
+}

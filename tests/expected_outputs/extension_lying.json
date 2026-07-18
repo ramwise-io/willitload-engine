@@ -1,0 +1,88 @@
+{
+  "accounting": {
+    "catalogued": 0,
+    "degraded": 0,
+    "files_seen": 2,
+    "profiled": 2,
+    "reconciles": true,
+    "refused": 0
+  },
+  "elapsed_ms": 0.0,
+  "families": [
+    {
+      "column_count": 3,
+      "family_id": "F0001",
+      "file_count": 2,
+      "representative_columns": [
+        "customer_id",
+        "order_date",
+        "amount"
+      ],
+      "type_variants": 1,
+      "within_family_findings": []
+    }
+  ],
+  "file_verdicts": [
+    {
+      "bucket": "profiled",
+      "column_count": 3,
+      "column_types": {},
+      "delimiter": null,
+      "encoding": "utf-8",
+      "explanation": "First member of new family 'F0001' (3 columns: customer_id, order_date, amount).",
+      "family_id": "F0001",
+      "findings": [],
+      "format_detected": "json",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount"
+      ],
+      "path": "tests/fixtures/extension_lying/looks_like_csv.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 349,
+      "type_variant_id": null,
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "profiled",
+      "column_count": 3,
+      "column_types": {
+        "amount": "decimal",
+        "customer_id": "int",
+        "order_date": "date"
+      },
+      "delimiter": ",",
+      "encoding": "utf-8",
+      "explanation": "Assigned to family 'F0001': exact structural match (3 columns, same order).",
+      "family_id": "F0001",
+      "findings": [],
+      "format_detected": "csv",
+      "has_header": true,
+      "normalized_column_names": [
+        "customer_id",
+        "order_date",
+        "amount"
+      ],
+      "path": "tests/fixtures/extension_lying/real.csv",
+      "raw_column_names": [
+        "customer_id",
+        "order_date",
+        "amount"
+      ],
+      "row_count_estimate": null,
+      "size_bytes": 155,
+      "type_variant_id": "V0001",
+      "verdict": "conforms"
+    }
+  ],
+  "path_expression": "tests/fixtures/extension_lying",
+  "scan_findings": [],
+  "version": "0.1.0"
+}

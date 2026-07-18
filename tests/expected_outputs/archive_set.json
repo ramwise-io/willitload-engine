@@ -1,0 +1,75 @@
+{
+  "accounting": {
+    "catalogued": 2,
+    "degraded": 0,
+    "files_seen": 2,
+    "profiled": 0,
+    "reconciles": true,
+    "refused": 0
+  },
+  "elapsed_ms": 0.0,
+  "families": [],
+  "file_verdicts": [
+    {
+      "bucket": "catalogued",
+      "column_count": null,
+      "column_types": {},
+      "delimiter": null,
+      "encoding": "latin-1",
+      "explanation": "No columns detected; not assigned to a family.",
+      "family_id": null,
+      "findings": [
+        {
+          "confidence": 1,
+          "expected": "UTF-8, UTF-16, or explicit encoding",
+          "explanation": "File only decoded successfully under Latin-1. This is a deterministic finding \u2014 no encoding guessing was used. Structural profile may be incomplete if encoding is incorrect.",
+          "found": "latin-1 (fallback)",
+          "locus": "file encoding",
+          "reason_code": "ENCODING_FALLBACK",
+          "severity": "WARN"
+        }
+      ],
+      "format_detected": "zip",
+      "has_header": null,
+      "normalized_column_names": [],
+      "path": "tests/fixtures/archive_set/archive_multi.zip",
+      "raw_column_names": [],
+      "row_count_estimate": null,
+      "size_bytes": 1120,
+      "type_variant_id": null,
+      "verdict": "conforms"
+    },
+    {
+      "bucket": "catalogued",
+      "column_count": null,
+      "column_types": {},
+      "delimiter": null,
+      "encoding": "latin-1",
+      "explanation": "No columns detected; not assigned to a family.",
+      "family_id": null,
+      "findings": [
+        {
+          "confidence": 1,
+          "expected": "UTF-8, UTF-16, or explicit encoding",
+          "explanation": "File only decoded successfully under Latin-1. This is a deterministic finding \u2014 no encoding guessing was used. Structural profile may be incomplete if encoding is incorrect.",
+          "found": "latin-1 (fallback)",
+          "locus": "file encoding",
+          "reason_code": "ENCODING_FALLBACK",
+          "severity": "WARN"
+        }
+      ],
+      "format_detected": "zip",
+      "has_header": null,
+      "normalized_column_names": [],
+      "path": "tests/fixtures/archive_set/archive_normal.zip",
+      "raw_column_names": [],
+      "row_count_estimate": null,
+      "size_bytes": 567,
+      "type_variant_id": null,
+      "verdict": "conforms"
+    }
+  ],
+  "path_expression": "tests/fixtures/archive_set",
+  "scan_findings": [],
+  "version": "0.1.0"
+}
