@@ -407,38 +407,32 @@ willitload scan "./01_breadth/**/*"
 ### Terminal Output
 ```ansi
 willitload scan -- ./01_breadth/**/*
-  52 files seen  |  33 profiled  |  0 degraded  |  15 catalogued  |  4 refused
-  Elapsed: 684ms
+  52 files seen  |  36 profiled  |  0 degraded  |  15 catalogued  |  1 refused
+  Elapsed: 622ms
 
 Fileset Findings
-  WARN Column 'id' infers as different types across files in family F0008: any 
+  WARN Column 'id' infers as different types across files in family F0006: any 
 in 1 files, text in 1 file(s). This is especially dangerous for sequential 
 concat operations (pandas, etc.) where type coercion can silently corrupt data.
 
-16 structural families detected
+14 structural families detected
 +-----------------------------------------------------------------------------+
 | Family | Files | Columns | Type Variants | Representative Columns           |
 |--------+-------+---------+---------------+----------------------------------|
-| F0001  |     1 |       2 |             1 | id, city                         |
+| F0001  |     6 |       2 |             1 | id, city                         |
 | F0002  |     6 |       5 |             1 | order_id, customer_id, sku,      |
 |        |       |         |               | quantity, revenue                |
 | F0003  |     6 |       3 |             1 | a, b, c                          |
 | F0004  |     2 |       2 |             1 | city, name                       |
-| F0005  |     4 |       2 |             1 | id, city                         |
-| F0006  |     1 |       2 |             1 | i d ,  c i t y                   |
-| F0007  |     2 |       2 |             1 | a, b                             |
-| F0008  |     5 |       2 |             2 | id, v                            |
+| F0005  |     2 |       2 |             1 | a, b                             |
+| F0006  |     5 |       2 |             2 | id, v                            |
+| F0007  |     1 |       2 |             1 | order_id, amount                 |
+| F0008  |     2 |       2 |             1 | column0, column1                 |
 +-----------------------------------------------------------------------------+
 
-6 broken file(s)
+3 broken file(s)
   [X] ./01_breadth/archive_health/corrupt_truncated.csv.gz
       ERROR file compression: Failed to decompress Gzip header: Compressed file ended before the end-of-stream marker was reached (CORRUPT_ARCHIVE)
-  [X] ./01_breadth/archive_health/gz_decode_error.csv.gz
-      ERROR file decoding: 'utf-8' codec can't decode byte 0xff in position 13: invalid start byte (DECODE_ERROR)
-  [X] ./01_breadth/encoding_zoo/broken_bytes.csv
-      ERROR file decoding: 'utf-8' codec can't decode byte 0xff in position 13: invalid start byte (DECODE_ERROR)
-  [X] ./01_breadth/encoding_zoo/latin1.csv
-      ERROR file decoding: 'utf-8' codec can't decode byte 0xe9 in position 15: invalid continuation byte (DECODE_ERROR)
   [X] ./01_breadth/ragged_and_truncated/ragged.csv
       ERROR row 3: 1 row(s) have a column count that deviates from the file's mode (3 columns). (RAGGED_ROWS)
   [X] ./01_breadth/ragged_and_truncated/truncated.csv
