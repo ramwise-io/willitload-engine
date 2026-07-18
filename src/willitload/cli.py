@@ -159,7 +159,7 @@ def _load_baseline(path_str: str):
         pass
 
     # Known schema file extensions -> flat schema
-    if suffix in (".schema", ".txt", ".csv", ""):
+    if suffix in (".schema", ".txt", ""):
         try:
             return parse_flat_schema(path)
         except ValueError:

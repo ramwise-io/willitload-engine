@@ -61,11 +61,14 @@ class TestCompatibility:
         assert check_compatibility(TypeClass.ANY, TypeClass.ANY) == Compatibility.IDENTICAL
 
     def test_widening_pairs(self):
-        assert check_compatibility(TypeClass.INT, TypeClass.DECIMAL) == Compatibility.WIDENING
-        assert check_compatibility(TypeClass.DATE, TypeClass.TIMESTAMP) == Compatibility.WIDENING
-        assert check_compatibility(TypeClass.BOOL, TypeClass.INT) == Compatibility.WIDENING
+        assert check_compatibility(TypeClass.DECIMAL, TypeClass.INT) == Compatibility.WIDENING
+        assert check_compatibility(TypeClass.TIMESTAMP, TypeClass.DATE) == Compatibility.WIDENING
+        assert check_compatibility(TypeClass.INT, TypeClass.BOOL) == Compatibility.WIDENING
+        assert check_compatibility(TypeClass.TEXT, TypeClass.INT) == Compatibility.WIDENING
 
     def test_breaking_pairs(self):
+        assert check_compatibility(TypeClass.INT, TypeClass.DECIMAL) == Compatibility.BREAKING
+        assert check_compatibility(TypeClass.DATE, TypeClass.TIMESTAMP) == Compatibility.BREAKING
+        assert check_compatibility(TypeClass.BOOL, TypeClass.INT) == Compatibility.BREAKING
         assert check_compatibility(TypeClass.DECIMAL, TypeClass.BOOL) == Compatibility.BREAKING
         assert check_compatibility(TypeClass.DATE, TypeClass.INT) == Compatibility.BREAKING
-        assert check_compatibility(TypeClass.TEXT, TypeClass.INT) == Compatibility.BREAKING

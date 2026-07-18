@@ -152,17 +152,21 @@ def normalize_type(raw: str) -> TypeClass:
 # ---------------------------------------------------------------------------
 
 # Widening pairs (baseline_type, observed_type) — order matters
+# Answers: "If baseline expects A, and we observe B, is that OK (safe coercion)?"
 _WIDENING_PAIRS: frozenset[tuple[TypeClass, TypeClass]] = frozenset({
-    # int observed where decimal declared (or vice-versa for narrowing, handled below)
-    (TypeClass.INT, TypeClass.DECIMAL),   # baseline=int, observed=decimal → widening
-    (TypeClass.INT, TypeClass.TEXT),      # baseline=int, observed=text → widening (lossy but a text can hold ints)
-    (TypeClass.DECIMAL, TypeClass.TEXT),  # baseline=decimal, observed=text → widening
-    (TypeClass.DATE, TypeClass.TIMESTAMP),# baseline=date, observed=timestamp → widening
-    (TypeClass.DATE, TypeClass.TEXT),
-    (TypeClass.TIMESTAMP, TypeClass.TEXT),
-    (TypeClass.BOOL, TypeClass.INT),      # boolean promoted to int is common
-    (TypeClass.BOOL, TypeClass.TEXT),
-    (TypeClass.ANY, TypeClass.ANY),       # any vs anything → not a conflict
+    # Integer can be safely loaded into a decimal column
+    (TypeClass.DECIMAL, TypeClass.INT),
+    # Integer, decimal, date, timestamp, bool, blob can all be safely loaded into a text column
+    (TypeClass.TEXT, TypeClass.INT),
+    (TypeClass.TEXT, TypeClass.DECIMAL),
+    (TypeClass.TEXT, TypeClass.DATE),
+    (TypeClass.TEXT, TypeClass.TIMESTAMP),
+    (TypeClass.TEXT, TypeClass.BOOL),
+    (TypeClass.TEXT, TypeClass.BLOB),
+    # Date can be safely loaded into a timestamp column
+    (TypeClass.TIMESTAMP, TypeClass.DATE),
+    # Boolean can be safely loaded into an integer column (often as 0/1)
+    (TypeClass.INT, TypeClass.BOOL),
 })
 
 # The ANY wildcard is compatible with everything

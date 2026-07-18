@@ -33,40 +33,31 @@ def parse_golden_file(path: str | Path) -> BaselineFingerprint:
         raise ValueError(f"Golden file path is not a file: {path}")
 
     import duckdb
-    from willitload.tier0.physical import PhysicalFile
+    from willitload.tier0.resolver import _profile_one, ResolverConfig
     from willitload.models import Bucket
-    from willitload.tier0.duckdb_reader import profile_file
-
-    # Detect encoding and format
-    try:
-        with open(path, "rb") as fh:
-            sample = fh.read(65536)
-    except OSError as e:
-        raise ValueError(f"Could not read golden file {path}: {e}")
-
-    encoding, is_fallback = detect_encoding(sample)
-    fmt, _confidence = detect_format(path, sample, encoding)
+    from willitload.types import TypeClass
 
     conn = duckdb.connect(":memory:")
     conn.execute("SET enable_progress_bar = false")
 
-    pf = PhysicalFile(path=path, size_bytes=path.stat().st_size, encoding=encoding, format_detected=fmt)
-
     try:
-        profile_file(path, fmt, encoding, conn, pf)
+        pf = _profile_one(path, conn, ResolverConfig())
     finally:
         conn.close()
+
+    if pf.bucket == Bucket.REFUSED:
+        raise ValueError(f"Golden file {path} could not be read: {pf.error}")
 
     if not pf.raw_column_names:
         raise ValueError(
             f"Golden file {path} could not be profiled — "
-            f"no column names extracted (format: {fmt!r})"
+            f"no column names extracted (format: {pf.format_detected!r})"
         )
 
     columns: list[BaselineColumn] = []
     for i, raw_name in enumerate(pf.raw_column_names):
         trace = canonicalize_name(raw_name)
-        type_class = normalize_type("any")  # golden-file baseline: types from Tier 2 if needed
+        type_class = pf.column_types.get(raw_name, TypeClass.ANY)
         columns.append(
             BaselineColumn(
                 name=trace.normalized,
@@ -77,7 +68,7 @@ def parse_golden_file(path: str | Path) -> BaselineFingerprint:
         )
 
     return BaselineFingerprint(
-        source_description=f"golden sample file: {path} (format: {fmt})",
+        source_description=f"golden sample file: {path} (format: {pf.format_detected})",
         columns=columns,
         source_path=path,
     )

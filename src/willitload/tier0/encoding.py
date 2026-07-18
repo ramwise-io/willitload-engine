@@ -78,7 +78,7 @@ def detect_encoding(path_or_sample: str | bytes) -> tuple[str, bool]:
         sample.decode("utf-8", errors="strict")
         return ("utf-8", False)
     except UnicodeDecodeError as e:
-        if len(sample) - e.start <= 4:
+        if len(sample) >= SAMPLE_BYTES and len(sample) - e.start <= 4:
             try:
                 sample[:e.start].decode("utf-8", errors="strict")
                 return ("utf-8", False)
@@ -93,7 +93,7 @@ def detect_encoding(path_or_sample: str | bytes) -> tuple[str, bool]:
             sample.decode("utf-16-le", errors="strict")
             return ("utf-16-le", False)
         except UnicodeDecodeError as e:
-            if len(sample) - e.start <= 4:
+            if len(sample) >= SAMPLE_BYTES and len(sample) - e.start <= 4:
                 try:
                     sample[:e.start].decode("utf-16-le", errors="strict")
                     return ("utf-16-le", False)
@@ -107,7 +107,7 @@ def detect_encoding(path_or_sample: str | bytes) -> tuple[str, bool]:
             sample.decode("utf-16-be", errors="strict")
             return ("utf-16-be", False)
         except UnicodeDecodeError as e:
-            if len(sample) - e.start <= 4:
+            if len(sample) >= SAMPLE_BYTES and len(sample) - e.start <= 4:
                 try:
                     sample[:e.start].decode("utf-16-be", errors="strict")
                     return ("utf-16-be", False)
