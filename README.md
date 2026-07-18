@@ -1,6 +1,6 @@
 # willitload — Fileset Structural Pre-Flight for Bulk Loads
 
-[![Tests](https://github.com/ramca-cyber/willitload-engine/actions/workflows/test.yml/badge.svg)](https://github.com/ramca-cyber/willitload-engine/actions)
+[![Tests](https://github.com/ramwise-io/willitload-engine/actions/workflows/test.yml/badge.svg)](https://github.com/ramwise-io/willitload-engine/actions)
 [![License: Apache-2.0](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python: 3.10+](https://img.shields.io/badge/Python-3.10+-blue.svg)](https://www.python.org/downloads/)
 
@@ -99,7 +99,7 @@ graph TD
 
 Install the package directly from GitHub:
 ```bash
-pip install git+https://github.com/ramca-cyber/willitload-engine.git
+pip install git+https://github.com/ramwise-io/willitload-engine.git
 ```
 
 Or install it locally for development:
