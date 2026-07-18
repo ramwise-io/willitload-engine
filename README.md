@@ -166,3 +166,11 @@ python -m pytest -v
 ```bash
 python tests/benchmark_perf.py
 ```
+
+---
+
+## ⚖️ Disclaimer
+
+`willitload` is a pre-flight validator, not a database loader. It helps identify structural drift and anomalies beforehand to save pipeline computing, but it does **not** guarantee that your target database, data warehouse, or processing pipeline will ingest the files successfully (as loader-specific constraints, database locks, network state, or transaction limits are outside of `willitload`'s scope). 
+
+This software is provided "as is", without warranty of any kind, express or implied. Use it at your own risk in production workflows.
