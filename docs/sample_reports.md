@@ -11,8 +11,8 @@ All scenarios in this report can be run locally using the test data and datasets
   python tests/fixtures/generate_fixtures.py
   ```
   Then, substitute `./data/raw_imports/` in the commands with `tests/fixtures/column_drift/` or `tests/fixtures/header_chaos/` to execute them.
-* **Scenario 8**: Based on the `top-things.zip` dataset. Extract it inside the workspace, and substitute `./reddits/` in the command with the path to the extracted reddit CSV folders.
-* **Scenarios 9–12**: These are based on the `willitload-test-corpus.zip` dataset included in the root of this repository. Extract the zip file (e.g. into `tests/large_data/willitload-test-corpus/wilcorpus/`), and run the commands against its subfolders (`01_breadth`, `02_demo`, `03_scale`, and `04_blind`).
+* **Scenario 8**: Run directly against `tests/large_data/reddit_dataset/`.
+* **Scenarios 9–12**: Run directly against the subfolders of `tests/large_data/willitload-test-corpus/` (`01_breadth`, `02_demo`, `03_scale`, and `04_blind`).
 
 ---
 
@@ -295,18 +295,18 @@ No structural anomalies detected within the fileset.
 
 ---
 
-## 📊 Scenario 8: Real-World 5,000+ Reddit Dataset Scan (Large Nested CSV Fileset)
+## 📊 Scenario 8: Real-World 5,000+ Reddit Dataset Scan (Large CSV Fileset)
 
-Running `scan` across a partitioned dataset containing **5,074 CSV files** of subreddit mentions (`top-things.zip`). The engine profiles the entire fileset in **19.4 seconds** (< 4ms per file) and uncovers structural anomalies, multi-record regimes, and column type drift across the partition.
+Running `scan` across a partitioned dataset containing **5,074 CSV files** of subreddit mentions (`tests/large_data/reddit_dataset/`). The engine profiles the entire fileset in **19.4 seconds** (< 4ms per file) and uncovers structural anomalies, multi-record regimes, and column type drift across the partition.
 
 ### Command
 ```bash
-willitload scan "./reddits/**/*.csv"
+willitload scan "tests/large_data/reddit_dataset/**/*.csv"
 ```
 
 ### Terminal Output
 ```ansi
-willitload scan -- ./reddits/**/*.csv
+willitload scan -- tests/large_data/reddit_dataset/**/*.csv
   5074 files seen  |  5074 profiled  |  0 degraded  |  0 catalogued  |  0 refused
   Elapsed: 19437ms
 
@@ -330,21 +330,21 @@ corrupt data.
 +-----------------------------------------------------------------------------+
 
 103 broken file(s)
-  [X] ./reddits/a/ATBGE.csv
+  [X] tests/large_data/reddit_dataset/a/ATBGE.csv
       ERROR row 4, row 5: 2 row(s) have a column count that deviates from the 
 file's mode (5 columns). Likely cause: unescaped delimiter or embedded newline.
-  [X] ./reddits/a/arrow.csv
+  [X] tests/large_data/reddit_dataset/a/arrow.csv
       ERROR row 7: 1 row(s) have a column count that deviates from the file's 
 mode (5 columns). Likely cause: unescaped delimiter or embedded newline.
       WARN row 9: Final sampled row (row 9) has 6 columns vs expected 5. 
 Possible totals/summary row appended to the data. (TRAILING_SUMMARY)
-  [X] ./reddits/b/BoJackHorseman.csv
+  [X] tests/large_data/reddit_dataset/b/BoJackHorseman.csv
       ERROR row 6, row 7, row 8: 3 row(s) have a column count that deviates 
 from the file's mode (5 columns). Likely cause: unescaped delimiter or embedded 
 newline.
       WARN file structure: File contains 2 distinct stable column-count 
 regimes, suggesting multiple logical record types stacked vertically. (MULTI_RECORD)
-  [X] ./reddits/c/CHIBears.csv
+  [X] tests/large_data/reddit_dataset/c/CHIBears.csv
       ERROR row 11: 1 row(s) have a column count that deviates from the file's 
 mode (5 columns). Likely cause: unescaped delimiter or embedded newline.
       WARN file structure: File contains 2 distinct stable column-count 
@@ -355,7 +355,7 @@ regimes, suggesting multiple logical record types stacked vertically. (MULTI_REC
 
 ## 🛒 Scenario 9: Acme Daily Orders Feed Ingestion Gate (Checking Daily Feeds)
 
-Running `check` on a realistic sequence of daily vendor feeds (`02_demo/acme_daily_orders/`) against a fixed expected schema. The engine validates all 14 files, permitting 11 clean files to pass as `GOLDEN`, while isolating 3 broken files with specific schema drift:
+Running `check` on a realistic sequence of daily vendor feeds (`tests/large_data/willitload-test-corpus/02_demo/acme_daily_orders/`) against a fixed expected schema. The engine validates all 14 files, permitting 11 clean files to pass as `GOLDEN`, while isolating 3 broken files with specific schema drift:
 1. **Day 11 (`orders_2026-02-11.csv`)**: Unregistered column `discount` is added under a `strict` policy.
 2. **Day 12 (`orders_2026-02-12.csv`)**: Column `customer_id` is renamed to `account_id`, causing missing and extra column errors + rename alignment warning hints.
 3. **Day 13 (`orders_2026-02-13.csv`)**: Column `unit_price` has a string currency symbol (`$`) inserted in its values, causing the float column to infer as `text` (flagged as a breaking type mismatch).
@@ -363,13 +363,13 @@ Running `check` on a realistic sequence of daily vendor feeds (`02_demo/acme_dai
 
 ### Command
 ```bash
-willitload check "./acme_daily_orders/*.csv" --against "./expected.schema" --align name
+willitload check "tests/large_data/willitload-test-corpus/02_demo/acme_daily_orders/*.csv" --against "tests/large_data/willitload-test-corpus/02_demo/expected.schema" --align name
 ```
 
 ### Terminal Output
 ```ansi
-willitload check -- ./acme_daily_orders/*.csv
-  Baseline: flat schema file: ./expected.schema
+willitload check -- tests/large_data/willitload-test-corpus/02_demo/acme_daily_orders/*.csv
+  Baseline: flat schema file: tests/large_data/willitload-test-corpus/02_demo/expected.schema
   Mode: name  |  Extra-column policy: strict
   14 files seen  |  11 golden  |  0 warned  |  3 broken
   Elapsed: 628ms
@@ -382,11 +382,11 @@ corrupt data.
 
 BROKEN - 3 file(s) do not conform
 
-  [X] ./acme_daily_orders/orders_2026-02-11.csv
+  [X] tests/large_data/willitload-test-corpus/02_demo/acme_daily_orders/orders_2026-02-11.csv
       ERROR column 'discount': Column 'discount' is present in this file but 
 not declared in the baseline. With --extra strict, this is treated as drift. (EXTRA_COLUMN)
 
-  [X] ./acme_daily_orders/orders_2026-02-12.csv
+  [X] tests/large_data/willitload-test-corpus/02_demo/acme_daily_orders/orders_2026-02-12.csv
       ERROR column 'customer_id': Column 'customer_id' declared in baseline is 
 absent from this file. A name-bound load will fail to find this column and 
 break/error. (MISSING_COLUMN)
@@ -396,7 +396,7 @@ drift. (EXTRA_COLUMN)
       WARN position 1: Position 1: baseline expects 'customer_id', file has 
 'account_id'. This may be a rename. (COLUMN_NAME_MISMATCH)
 
-  [X] ./acme_daily_orders/orders_2026-02-13.csv
+  [X] tests/large_data/willitload-test-corpus/02_demo/acme_daily_orders/orders_2026-02-13.csv
       ERROR column 'unit_price': Column 'unit_price': baseline declares 
 decimal, file infers text. Breaking type change -- the load may fail or 
 silently corrupt this column. (TYPE_MISMATCH)
@@ -413,12 +413,12 @@ Auditing the `01_breadth/` dataset which tests distinct structural phenomena inc
 
 ### Command
 ```bash
-willitload scan "./01_breadth/**/*"
+willitload scan "tests/large_data/willitload-test-corpus/01_breadth/**/*"
 ```
 
 ### Terminal Output
 ```ansi
-willitload scan -- ./01_breadth/**/*
+willitload scan -- tests/large_data/willitload-test-corpus/01_breadth/**/*
   52 files seen  |  36 profiled  |  0 degraded  |  15 catalogued  |  1 refused
   Elapsed: 622ms
 
@@ -443,11 +443,11 @@ concat operations (pandas, etc.) where type coercion can silently corrupt data.
 +-----------------------------------------------------------------------------+
 
 3 broken file(s)
-  [X] ./01_breadth/archive_health/corrupt_truncated.csv.gz
+  [X] tests/large_data/willitload-test-corpus/01_breadth/archive_health/corrupt_truncated.csv.gz
       ERROR file compression: Failed to decompress Gzip header: Compressed file ended before the end-of-stream marker was reached (CORRUPT_ARCHIVE)
-  [X] ./01_breadth/ragged_and_truncated/ragged.csv
+  [X] tests/large_data/willitload-test-corpus/01_breadth/ragged_and_truncated/ragged.csv
       ERROR row 3: 1 row(s) have a column count that deviates from the file's mode (3 columns). (RAGGED_ROWS)
-  [X] ./01_breadth/ragged_and_truncated/truncated.csv
+  [X] tests/large_data/willitload-test-corpus/01_breadth/ragged_and_truncated/truncated.csv
       ERROR row 2: 1 row(s) have a column count that deviates from the file's mode (2 columns). (RAGGED_ROWS)
 ```
 
@@ -455,17 +455,17 @@ concat operations (pandas, etc.) where type coercion can silently corrupt data.
 
 ## ⚡ Scenario 11: Scale & Needle-in-Haystack Ingestion Gate (03_scale)
 
-Evaluating the engine's performance scaling and outlier verification accuracy across **1,200 files** (`03_scale/wide_feed/`) against a baseline expected schema. It scans and isolates 4 broken files in under **6 seconds**.
+Evaluating the engine's performance scaling and outlier verification accuracy across **1,200 files** (`tests/large_data/willitload-test-corpus/03_scale/wide_feed/`) against a baseline expected schema. It scans and isolates 4 broken files in under **6 seconds**.
 
 ### Command
 ```bash
-willitload check "./wide_feed/*.csv" --against "./baseline.schema" --align name
+willitload check "tests/large_data/willitload-test-corpus/03_scale/wide_feed/*.csv" --against "tests/large_data/willitload-test-corpus/03_scale/baseline.schema" --align name
 ```
 
 ### Terminal Output
 ```ansi
-willitload check -- ./wide_feed/*.csv
-  Baseline: flat schema file: ./baseline.schema
+willitload check -- tests/large_data/willitload-test-corpus/03_scale/wide_feed/*.csv
+  Baseline: flat schema file: tests/large_data/willitload-test-corpus/03_scale/baseline.schema
   Mode: name  |  Extra-column policy: strict
   1200 files seen  |  1196 golden  |  0 warned  |  4 broken
   Elapsed: 5910ms
@@ -477,16 +477,16 @@ concat operations (pandas, etc.) where type coercion can silently corrupt data.
 
 BROKEN - 4 file(s) do not conform
 
-  [X] ./wide_feed/part_00137.csv
+  [X] tests/large_data/willitload-test-corpus/03_scale/wide_feed/part_00137.csv
       ERROR column 'coupon': Column 'coupon' is present in this file but not declared in the baseline. With --extra strict, this is treated as drift. (EXTRA_COLUMN)
 
-  [X] ./wide_feed/part_00512.csv
+  [X] tests/large_data/willitload-test-corpus/03_scale/wide_feed/part_00512.csv
       ERROR column 'price': Column 'price' declared in baseline is absent from this file. A name-bound load will fail to find this column and break. (MISSING_COLUMN)
 
-  [X] ./wide_feed/part_00888.csv
+  [X] tests/large_data/willitload-test-corpus/03_scale/wide_feed/part_00888.csv
       ERROR column 'qty': Column 'qty': baseline declares int, file infers text. Breaking type change -- the load may fail or silently corrupt this column. (TYPE_MISMATCH)
 
-  [X] ./wide_feed/part_01050.csv
+  [X] tests/large_data/willitload-test-corpus/03_scale/wide_feed/part_01050.csv
       ERROR column 'customer': Column 'customer' declared in baseline is absent from this file. (MISSING_COLUMN)
       ERROR column 'client': Column 'client' is present in this file but not declared in the baseline. (EXTRA_COLUMN)
       WARN position 1: Position 1: baseline expects 'customer', file has 'client'. This may be a rename. (COLUMN_NAME_MISMATCH)
@@ -503,20 +503,20 @@ Demonstrating the engine's precision and recall against blind adversarial datase
 
 ### Command 1: Type Drift Mismatch (case_epsilon)
 ```bash
-willitload check "./case_epsilon/*.csv" --against "./p1.csv" --align name
+willitload check "tests/large_data/willitload-test-corpus/04_blind/case_epsilon/*.csv" --against "tests/large_data/willitload-test-corpus/04_blind/case_epsilon/p1.csv" --align name
 ```
 
 ### Terminal Output 1
 ```ansi
-willitload check -- ./case_epsilon/*.csv
-  Baseline: golden sample file: ./p1.csv (format: csv)
+willitload check -- tests/large_data/willitload-test-corpus/04_blind/case_epsilon/*.csv
+  Baseline: golden sample file: tests/large_data/willitload-test-corpus/04_blind/case_epsilon/p1.csv (format: csv)
   Mode: name  |  Extra-column policy: strict
   5 files seen  |  4 golden  |  0 warned  |  1 broken
   Elapsed: 111ms
 
 BROKEN - 1 file(s) do not conform
 
-  [X] ./case_epsilon/p6.csv
+  [X] tests/large_data/willitload-test-corpus/04_blind/case_epsilon/p6.csv
       ERROR column 'id': Column 'id': baseline declares int, file infers text. Breaking type change -- the load may fail or silently corrupt this column. (TYPE_MISMATCH)
 
 [OK] 4 file(s) conform -- 'Conforms' = structurally matches the declared 
@@ -527,20 +527,20 @@ contract. Does NOT mean values are correct.
 Checks a folder where **all files** lack an expected `revenue` column. Scans alone would call this clean, but `willitload` correctly flags the drift.
 
 ```bash
-willitload check "./case_zeta/*.csv" --against "./baseline_orders.schema" --align name
+willitload check "tests/large_data/willitload-test-corpus/04_blind/case_zeta/*.csv" --against "tests/large_data/willitload-test-corpus/04_blind/baseline_orders.schema" --align name
 ```
 
 ### Terminal Output 2
 ```ansi
-willitload check -- ./case_zeta/*.csv
-  Baseline: flat schema file: ./baseline_orders.schema
+willitload check -- tests/large_data/willitload-test-corpus/04_blind/case_zeta/*.csv
+  Baseline: flat schema file: tests/large_data/willitload-test-corpus/04_blind/baseline_orders.schema
   Mode: name  |  Extra-column policy: strict
   7 files seen  |  0 golden  |  0 warned  |  7 broken
   Elapsed: 648ms
 
 BROKEN - 7 file(s) do not conform
 
-  [X] ./case_zeta/o1.csv
+  [X] tests/large_data/willitload-test-corpus/04_blind/case_zeta/o1.csv
       ERROR column 'revenue': Column 'revenue' declared in baseline is absent from this file. (MISSING_COLUMN)
   ... [X] for o2.csv through o7.csv ...
 ```
