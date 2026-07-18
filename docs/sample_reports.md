@@ -393,5 +393,152 @@ silently corrupt this column. (TYPE_MISMATCH)
 contract. Does NOT mean values are correct.
 ```
 
+---
+
+## 🔍 Scenario 10: Specific Structural Edge Cases Scan (01_breadth)
+
+Auditing the `01_breadth/` dataset which tests distinct structural phenomena including: encoding boundary straddles (must NOT be flagged), genuinely corrupt bytes (must be flagged), different delimiter styles, date/int/bool edge cases, and dots/baselines sitting inside the scanned data folder.
+
+### Command
+```bash
+willitload scan "./01_breadth/**/*"
+```
+
+### Terminal Output
+```ansi
+willitload scan -- ./01_breadth/**/*
+  52 files seen  |  33 profiled  |  0 degraded  |  15 catalogued  |  4 refused
+  Elapsed: 684ms
+
+Fileset Findings
+  WARN Column 'id' infers as different types across files in family F0008: any 
+in 1 files, text in 1 file(s). This is especially dangerous for sequential 
+concat operations (pandas, etc.) where type coercion can silently corrupt data.
+
+16 structural families detected
++-----------------------------------------------------------------------------+
+| Family | Files | Columns | Type Variants | Representative Columns           |
+|--------+-------+---------+---------------+----------------------------------|
+| F0001  |     1 |       2 |             1 | id, city                         |
+| F0002  |     6 |       5 |             1 | order_id, customer_id, sku,      |
+|        |       |         |               | quantity, revenue                |
+| F0003  |     6 |       3 |             1 | a, b, c                          |
+| F0004  |     2 |       2 |             1 | city, name                       |
+| F0005  |     4 |       2 |             1 | id, city                         |
+| F0006  |     1 |       2 |             1 | i d ,  c i t y                   |
+| F0007  |     2 |       2 |             1 | a, b                             |
+| F0008  |     5 |       2 |             2 | id, v                            |
++-----------------------------------------------------------------------------+
+
+6 broken file(s)
+  [X] ./01_breadth/archive_health/corrupt_truncated.csv.gz
+      ERROR file compression: Failed to decompress Gzip header: Compressed file ended before the end-of-stream marker was reached (CORRUPT_ARCHIVE)
+  [X] ./01_breadth/archive_health/gz_decode_error.csv.gz
+      ERROR file decoding: 'utf-8' codec can't decode byte 0xff in position 13: invalid start byte (DECODE_ERROR)
+  [X] ./01_breadth/encoding_zoo/broken_bytes.csv
+      ERROR file decoding: 'utf-8' codec can't decode byte 0xff in position 13: invalid start byte (DECODE_ERROR)
+  [X] ./01_breadth/encoding_zoo/latin1.csv
+      ERROR file decoding: 'utf-8' codec can't decode byte 0xe9 in position 15: invalid continuation byte (DECODE_ERROR)
+  [X] ./01_breadth/ragged_and_truncated/ragged.csv
+      ERROR row 3: 1 row(s) have a column count that deviates from the file's mode (3 columns). (RAGGED_ROWS)
+  [X] ./01_breadth/ragged_and_truncated/truncated.csv
+      ERROR row 2: 1 row(s) have a column count that deviates from the file's mode (2 columns). (RAGGED_ROWS)
+```
+
+---
+
+## ⚡ Scenario 11: Scale & Needle-in-Haystack Ingestion Gate (03_scale)
+
+Evaluating the engine's performance scaling and outlier verification accuracy across **1,200 files** (`03_scale/wide_feed/`) against a baseline expected schema. It scans and isolates 4 broken files in under **6 seconds**.
+
+### Command
+```bash
+willitload check "./wide_feed/*.csv" --against "./baseline.schema" --align name
+```
+
+### Terminal Output
+```ansi
+willitload check -- ./wide_feed/*.csv
+  Baseline: flat schema file: ./baseline.schema
+  Mode: name  |  Extra-column policy: strict
+  1200 files seen  |  1196 golden  |  0 warned  |  4 broken
+  Elapsed: 5910ms
+
+Fileset Findings
+  WARN Column 'qty' infers as different types across files in family F0001: int
+in 1196 files, text in 1 file(s). This is especially dangerous for sequential 
+concat operations (pandas, etc.) where type coercion can silently corrupt data.
+
+BROKEN - 4 file(s) do not conform
+
+  [X] ./wide_feed/part_00137.csv
+      ERROR column 'coupon': Column 'coupon' is present in this file but not declared in the baseline. With --extra strict, this is treated as drift. (EXTRA_COLUMN)
+
+  [X] ./wide_feed/part_00512.csv
+      ERROR column 'price': Column 'price' declared in baseline is absent from this file. A name-bound load will fail to find this column and break. (MISSING_COLUMN)
+
+  [X] ./wide_feed/part_00888.csv
+      ERROR column 'qty': Column 'qty': baseline declares int, file infers text. Breaking type change -- the load may fail or silently corrupt this column. (TYPE_MISMATCH)
+
+  [X] ./wide_feed/part_01050.csv
+      ERROR column 'customer': Column 'customer' declared in baseline is absent from this file. (MISSING_COLUMN)
+      ERROR column 'client': Column 'client' is present in this file but not declared in the baseline. (EXTRA_COLUMN)
+      WARN position 1: Position 1: baseline expects 'customer', file has 'client'. This may be a rename. (COLUMN_NAME_MISMATCH)
+
+[OK] 1196 file(s) conform -- 'Conforms' = structurally matches the declared 
+contract. Does NOT mean values are correct.
+```
+
+---
+
+## 🛡️ Scenario 12: Adversarial Alignment & Ingestion Drift Checking (04_blind)
+
+Demonstrating the engine's precision and recall against blind adversarial datasets. We run checks against target baselines, isolating renames, swaps, type drift, and whole-folder uniform drift.
+
+### Command 1: Type Drift Mismatch (case_epsilon)
+```bash
+willitload check "./case_epsilon/*.csv" --against "./p1.csv" --align name
+```
+
+### Terminal Output 1
+```ansi
+willitload check -- ./case_epsilon/*.csv
+  Baseline: golden sample file: ./p1.csv (format: csv)
+  Mode: name  |  Extra-column policy: strict
+  5 files seen  |  4 golden  |  0 warned  |  1 broken
+  Elapsed: 111ms
+
+BROKEN - 1 file(s) do not conform
+
+  [X] ./case_epsilon/p6.csv
+      ERROR column 'id': Column 'id': baseline declares int, file infers text. Breaking type change -- the load may fail or silently corrupt this column. (TYPE_MISMATCH)
+
+[OK] 4 file(s) conform -- 'Conforms' = structurally matches the declared 
+contract. Does NOT mean values are correct.
+```
+
+### Command 2: Whole-Folder Ingestion Drift (case_zeta)
+Checks a folder where **all files** lack an expected `revenue` column. Scans alone would call this clean, but `willitload` correctly flags the drift.
+
+```bash
+willitload check "./case_zeta/*.csv" --against "./baseline_orders.schema" --align name
+```
+
+### Terminal Output 2
+```ansi
+willitload check -- ./case_zeta/*.csv
+  Baseline: flat schema file: ./baseline_orders.schema
+  Mode: name  |  Extra-column policy: strict
+  7 files seen  |  0 golden  |  0 warned  |  7 broken
+  Elapsed: 648ms
+
+BROKEN - 7 file(s) do not conform
+
+  [X] ./case_zeta/o1.csv
+      ERROR column 'revenue': Column 'revenue' declared in baseline is absent from this file. (MISSING_COLUMN)
+  ... [X] for o2.csv through o7.csv ...
+```
+
+
 
 
