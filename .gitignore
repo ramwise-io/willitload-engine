@@ -50,3 +50,6 @@ venv.bak/
 *.db
 *.db.tmp
 *.sqlite
+
+# Large testing data directories
+tests/large_data/
