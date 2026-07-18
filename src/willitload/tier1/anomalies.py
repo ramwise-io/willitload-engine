@@ -54,6 +54,11 @@ def detect_csv_anomalies(
     path_str = str(pf.path)
     delim = pf.delimiter or ","
 
+    from willitload.tier0.duckdb_reader import _to_duckdb_encoding
+    db_enc = "UTF-8"
+    if pf.encoding:
+        db_enc = _to_duckdb_encoding(pf.encoding)
+
     try:
         # Read rows as raw lines via DuckDB, count delimiter occurrences per line
         # Passed as parameters — no interpolation
@@ -67,11 +72,12 @@ def detect_csv_anomalies(
                 columns={'line': 'VARCHAR'},
                 header=false,
                 auto_detect=false,
-                delim=''
+                delim='',
+                encoding=?
             )
             LIMIT ?
             """,
-            [delim, path_str, ANOMALY_SAMPLE_ROWS],
+            [delim, path_str, db_enc, ANOMALY_SAMPLE_ROWS],
         ).fetchall()
 
     except Exception:

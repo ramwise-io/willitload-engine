@@ -98,11 +98,14 @@ def sample_csv_types(
     path_str = str(path)
     rng = random.Random(config.seed)
 
+    from willitload.tier0.duckdb_reader import _to_duckdb_encoding
+    db_enc = _to_duckdb_encoding(encoding)
+
     try:
         # First: get total row count estimate (fast — DuckDB uses stats)
         total_rows_result = conn.execute(
-            "SELECT COUNT(*) FROM read_csv(?, header := ?, delim := ?)",
-            [path_str, has_header, delimiter],
+            "SELECT COUNT(*) FROM read_csv(?, header := ?, delim := ?, encoding := ?)",
+            [path_str, has_header, delimiter, db_enc],
         ).fetchone()
         total_rows = int(total_rows_result[0]) if total_rows_result else 0
 
@@ -110,8 +113,8 @@ def sample_csv_types(
         if total_rows <= config.first_n + config.random_n:
             # Small file — read all rows
             sample_query = conn.execute(
-                "SELECT * FROM read_csv(?, header := ?, delim := ?) LIMIT ?",
-                [path_str, has_header, delimiter, total_rows],
+                "SELECT * FROM read_csv(?, header := ?, delim := ?, encoding := ?) LIMIT ?",
+                [path_str, has_header, delimiter, db_enc, total_rows],
             )
             full_file = True
         else:
@@ -126,9 +129,9 @@ def sample_csv_types(
             # USING SAMPLE is reproducible with a fixed seed.
             sample_size = min(config.first_n + config.random_n, total_rows)
             sample_query = conn.execute(
-                f"SELECT * FROM read_csv(?, header := ?, delim := ?) "
+                f"SELECT * FROM read_csv(?, header := ?, delim := ?, encoding := ?) "
                 f"USING SAMPLE {sample_size} (reservoir, {config.seed})",
-                [path_str, has_header, delimiter],
+                [path_str, has_header, delimiter, db_enc],
             )
             full_file = False
 

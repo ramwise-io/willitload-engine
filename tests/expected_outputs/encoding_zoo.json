@@ -13,23 +13,9 @@
   "families": [
     {
       "family_id": "F0001",
-      "file_count": 3,
+      "file_count": 4,
       "representative_columns": [
         "customer_id",
-        "order_date",
-        "amount",
-        "status",
-        "notes"
-      ],
-      "column_count": 5,
-      "type_variants": 1,
-      "within_family_findings": []
-    },
-    {
-      "family_id": "F0002",
-      "file_count": 1,
-      "representative_columns": [
-        "\ufeffcustomer_id",
         "order_date",
         "amount",
         "status",
@@ -78,39 +64,61 @@
         "status",
         "notes"
       ],
-      "column_types": {},
-      "type_variant_id": null,
+      "column_types": {
+        "customer_id": "int",
+        "order_date": "date",
+        "amount": "decimal",
+        "status": "text",
+        "notes": "text"
+      },
+      "type_variant_id": "V0001",
       "explanation": "First member of new family 'F0001' (5 columns: customer_id, order_date, amount, status, notes)."
     },
     {
       "path": "tests/fixtures/encoding_zoo/utf16le.csv",
       "bucket": "profiled",
-      "verdict": "conforms",
-      "findings": [],
+      "verdict": "broken",
+      "findings": [
+        {
+          "reason_code": "TRUNCATED",
+          "severity": "ERROR",
+          "locus": "EOF",
+          "expected": "newline-terminated final row",
+          "found": "partial row at EOF",
+          "explanation": "File does not end with a newline. The final row may be truncated or the file may be incomplete.",
+          "confidence": 1
+        }
+      ],
       "format_detected": "csv",
       "encoding": "utf-16-le",
       "delimiter": ",",
       "has_header": true,
       "column_count": 5,
       "row_count_estimate": null,
-      "family_id": "F0002",
+      "family_id": "F0001",
       "raw_column_names": [
-        "\ufeffcustomer_id",
+        "customer_id",
         "order_date",
         "amount",
         "status",
         "notes"
       ],
       "normalized_column_names": [
-        "\ufeffcustomer_id",
+        "customer_id",
         "order_date",
         "amount",
         "status",
         "notes"
       ],
-      "column_types": {},
-      "type_variant_id": null,
-      "explanation": "First member of new family 'F0002' (5 columns: \ufeffcustomer_id, order_date, amount, status, notes)."
+      "column_types": {
+        "customer_id": "int",
+        "order_date": "date",
+        "amount": "decimal",
+        "status": "text",
+        "notes": "text"
+      },
+      "type_variant_id": "V0001",
+      "explanation": "Assigned to family 'F0001': exact structural match (5 columns, same order)."
     },
     {
       "path": "tests/fixtures/encoding_zoo/utf8.csv",

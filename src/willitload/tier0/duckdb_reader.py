@@ -104,10 +104,11 @@ def _duckdb_csv_columns(
     path_str = str(path)
 
     try:
-        # Use sniff_csv to get structural info — no encoding param in DuckDB 1.x
+        # Use sniff_csv to get structural info
+        db_enc = _to_duckdb_encoding(encoding)
         sniffer = conn.execute(
-            "SELECT * FROM sniff_csv(?)",
-            [path_str],
+            "SELECT * FROM sniff_csv(?, encoding = ?)",
+            [path_str, db_enc],
         ).fetchone()
 
         if sniffer is None:
@@ -186,15 +187,15 @@ def _duckdb_csv_columns(
 def _to_duckdb_encoding(enc: str) -> str:
     """Map our encoding names to DuckDB-accepted encoding strings."""
     _MAP = {
-        "utf-8":       "UTF8",
-        "utf-8-sig":   "UTF8",
-        "utf-16-le":   "UTF16",
-        "utf-16-be":   "UTF16",
-        "utf-32-le":   "UTF32",
-        "utf-32-be":   "UTF32",
-        "latin-1":     "LATIN1",
+        "utf-8":       "UTF-8",
+        "utf-8-sig":   "UTF-8",
+        "utf-16-le":   "UTF-16",
+        "utf-16-be":   "UTF-16",
+        "utf-32-le":   "UTF-32",
+        "utf-32-be":   "UTF-32",
+        "latin-1":     "LATIN-1",
     }
-    return _MAP.get(enc.lower(), "UTF8")
+    return _MAP.get(enc.lower(), "UTF-8")
 
 
 # ---------------------------------------------------------------------------
