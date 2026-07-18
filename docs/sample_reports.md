@@ -339,4 +339,59 @@ mode (5 columns). Likely cause: unescaped delimiter or embedded newline.
 regimes, suggesting multiple logical record types stacked vertically. (MULTI_RECORD)
 ```
 
+---
+
+## 🛒 Scenario 9: Acme Daily Orders Feed Ingestion Gate (Checking Daily Feeds)
+
+Running `check` on a realistic sequence of daily vendor feeds (`02_demo/acme_daily_orders/`) against a fixed expected schema. The engine validates all 14 files, permitting 11 clean files to pass as `GOLDEN`, while isolating 3 broken files with specific schema drift:
+1. **Day 11 (`orders_2026-02-11.csv`)**: Unregistered column `discount` is added under a `strict` policy.
+2. **Day 12 (`orders_2026-02-12.csv`)**: Column `customer_id` is renamed to `account_id`, causing missing and extra column errors + rename alignment warning hints.
+3. **Day 13 (`orders_2026-02-13.csv`)**: Column `unit_price` has a string currency symbol (`$`) inserted in its values, causing the float column to infer as `text` (flagged as a breaking type mismatch).
+4. **Day 14 (`orders_2026-02-14.csv`)**: File is truncated (cleanly holds fewer rows than other days) but structurally conforms to the baseline.
+
+### Command
+```bash
+willitload check "./acme_daily_orders/*.csv" --against "./expected.schema" --align name
+```
+
+### Terminal Output
+```ansi
+willitload check -- ./acme_daily_orders/*.csv
+  Baseline: flat schema file: ./expected.schema
+  Mode: name  |  Extra-column policy: strict
+  14 files seen  |  11 golden  |  0 warned  |  3 broken
+  Elapsed: 628ms
+
+Fileset Findings
+  WARN Column 'unit_price' infers as different types across files in family 
+F0001: decimal in 11 files, text in 1 file(s). This is especially dangerous for 
+sequential concat operations (pandas, etc.) where type coercion can silently 
+corrupt data.
+
+BROKEN - 3 file(s) do not conform
+
+  [X] ./acme_daily_orders/orders_2026-02-11.csv
+      ERROR column 'discount': Column 'discount' is present in this file but 
+not declared in the baseline. With --extra strict, this is treated as drift. (EXTRA_COLUMN)
+
+  [X] ./acme_daily_orders/orders_2026-02-12.csv
+      ERROR column 'customer_id': Column 'customer_id' declared in baseline is 
+absent from this file. A name-bound load will fail to find this column and 
+break/error. (MISSING_COLUMN)
+      ERROR column 'account_id': Column 'account_id' is present in this file 
+but not declared in the baseline. With --extra strict, this is treated as 
+drift. (EXTRA_COLUMN)
+      WARN position 1: Position 1: baseline expects 'customer_id', file has 
+'account_id'. This may be a rename. (COLUMN_NAME_MISMATCH)
+
+  [X] ./acme_daily_orders/orders_2026-02-13.csv
+      ERROR column 'unit_price': Column 'unit_price': baseline declares 
+decimal, file infers text. Breaking type change -- the load may fail or 
+silently corrupt this column. (TYPE_MISMATCH)
+
+[OK] 11 file(s) conform -- 'Conforms' = structurally matches the declared 
+contract. Does NOT mean values are correct.
+```
+
+
 
