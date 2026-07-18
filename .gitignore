@@ -53,3 +53,6 @@ venv.bak/
 
 # Large testing data directories
 tests/large_data/
+
+# Local scratch scripts
+scratch/
