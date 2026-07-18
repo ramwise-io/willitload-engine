@@ -158,6 +158,53 @@ def scan(
                 )
             )
 
+        # Physical bucket failure findings
+        if pf.bucket == Bucket.REFUSED:
+            if pf.error and pf.error.startswith("Permission denied"):
+                fv.findings.append(
+                    Finding(
+                        reason_code=ReasonCode.PERMISSION_DENIED,
+                        severity=Severity.ERROR,
+                        locus="file access",
+                        expected="read permission",
+                        found="permission denied",
+                        explanation=pf.error,
+                    )
+                )
+            elif pf.error and pf.error.startswith("DECODE_ERROR:"):
+                fv.findings.append(
+                    Finding(
+                        reason_code=ReasonCode.DECODE_ERROR,
+                        severity=Severity.ERROR,
+                        locus="file decoding",
+                        expected=f"valid {pf.encoding} encoding",
+                        found="corrupted byte sequence",
+                        explanation=pf.error.split(":", 1)[1].strip(),
+                    )
+                )
+            elif pf.error and pf.error.startswith("CORRUPT_ARCHIVE:"):
+                fv.findings.append(
+                    Finding(
+                        reason_code=ReasonCode.CORRUPT_ARCHIVE,
+                        severity=Severity.ERROR,
+                        locus="file compression",
+                        expected="healthy gzip archive",
+                        found="corrupted gzip archive",
+                        explanation=pf.error.split(":", 1)[1].strip(),
+                    )
+                )
+            else:
+                fv.findings.append(
+                    Finding(
+                        reason_code=ReasonCode.PERMISSION_DENIED,
+                        severity=Severity.ERROR,
+                        locus="file load",
+                        expected="valid readable file",
+                        found="unreadable file",
+                        explanation=pf.error or "Unknown error loading file",
+                    )
+                )
+
         # Mark broken if anomaly errors exist
         if any(f.severity == Severity.ERROR for f in fv.findings):
             fv.verdict = Verdict.BROKEN

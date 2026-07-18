@@ -242,12 +242,27 @@ def _profile_one(
             sample = fh.read(65536)
     except OSError as e:
         pf.bucket = Bucket.REFUSED
-        pf.error = f"File read failed: {e}"
+        pf.error = "Permission denied" if "permission" in str(e).lower() else f"File read failed: {e}"
         return pf
+
+    is_gzip = sample.startswith(b"\x1f\x8b")
+    sample_decompressed = None
+    if is_gzip:
+        import gzip
+        try:
+            with gzip.open(path, "rb") as gf:
+                sample_decompressed = gf.read(65536)
+        except Exception as e:
+            pf.bucket = Bucket.REFUSED
+            pf.error = f"CORRUPT_ARCHIVE: Failed to decompress Gzip header: {e}"
+            return pf
 
     # Encoding detection (deterministic — no chardet)
     try:
-        encoding, is_fallback = detect_encoding(sample)
+        if is_gzip and sample_decompressed:
+            encoding, is_fallback = detect_encoding(sample_decompressed)
+        else:
+            encoding, is_fallback = detect_encoding(sample)
         pf.encoding = encoding
         pf.encoding_is_fallback = is_fallback
     except Exception as e:
@@ -267,6 +282,13 @@ def _profile_one(
 
     # Dispatch to appropriate profiler
     _dispatch_profiler(path, fmt, encoding, conn, pf, config)
+
+    # Integrity verification (full-file incremental decoding & gzip check)
+    if pf.bucket in (Bucket.PROFILED, Bucket.CATALOGUED):
+        err = verify_file_decoding(path, fmt, encoding)
+        if err:
+            pf.bucket = Bucket.REFUSED
+            pf.error = err
 
     # In-worker canonicalization & Type inference for maximum query parallelization
     if pf.bucket == Bucket.PROFILED and pf.raw_column_names:
@@ -298,6 +320,74 @@ def _profile_one(
             pass
 
     return pf
+
+
+def verify_file_decoding(path: Path, format_detected: str, encoding: str) -> str | None:
+    """
+    Verify that the file can be fully decompressed (if gzip) and decoded using
+    an incremental boundary-safe decoder.
+
+    Returns error string on failure (prefixed with type), or None on success.
+    """
+    import codecs
+    import gzip
+    import zlib
+
+    # Map latin-1 to standard name if needed (latin-1 always succeeds, no check needed)
+    if encoding.lower() == "latin-1":
+        if format_detected == "gzip":
+            try:
+                with gzip.open(path, "rb") as gf:
+                    while True:
+                        chunk = gf.read(1024 * 1024)  # 1MB chunks
+                        if not chunk:
+                            break
+            except (gzip.BadGzipFile, OSError, EOFError, zlib.error) as e:
+                return f"CORRUPT_ARCHIVE: {e}"
+        return None
+
+    try:
+        decoder = codecs.getincrementaldecoder(encoding)(errors="strict")
+    except LookupError as e:
+        return f"DECODE_ERROR: Unsupported encoding {encoding}: {e}"
+
+    if format_detected == "gzip":
+        try:
+            with gzip.open(path, "rb") as gf:
+                while True:
+                    chunk = gf.read(1024 * 1024)  # 1MB chunks
+                    if not chunk:
+                        break
+                    try:
+                        decoder.decode(chunk, final=False)
+                    except (UnicodeDecodeError, ValueError) as e:
+                        return f"DECODE_ERROR: {e}"
+                # Finalize
+                try:
+                    decoder.decode(b"", final=True)
+                except (UnicodeDecodeError, ValueError) as e:
+                    return f"DECODE_ERROR: {e}"
+        except (gzip.BadGzipFile, OSError, EOFError, zlib.error) as e:
+            return f"CORRUPT_ARCHIVE: {e}"
+    elif format_detected in ("csv", "tsv", "json", "jsonl", "xml", "text"):
+        try:
+            with open(path, "rb") as f:
+                while True:
+                    chunk = f.read(1024 * 1024)
+                    if not chunk:
+                        break
+                    try:
+                        decoder.decode(chunk, final=False)
+                    except (UnicodeDecodeError, ValueError) as e:
+                        return f"DECODE_ERROR: {e}"
+                try:
+                    decoder.decode(b"", final=True)
+                except (UnicodeDecodeError, ValueError) as e:
+                    return f"DECODE_ERROR: {e}"
+        except OSError as e:
+            return f"CORRUPT_ARCHIVE: {e}"
+
+    return None
 
 
 def _dispatch_profiler(

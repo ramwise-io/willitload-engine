@@ -72,6 +72,12 @@ class ReasonCode(str, Enum):
     Deterministic finding — no probabilistic guessing involved.
     """
 
+    DECODE_ERROR = "DECODE_ERROR"
+    """File content contains byte sequences that cannot be decoded under the expected encoding."""
+
+    CORRUPT_ARCHIVE = "CORRUPT_ARCHIVE"
+    """The compressed archive is corrupted, truncated, or unreadable."""
+
     FORMAT_UNRECOGNIZED = "FORMAT_UNRECOGNIZED"
     """File format could not be identified from magic bytes or content sampling."""
 
@@ -175,6 +181,8 @@ SEVERITY_PROJECTION: dict[tuple[ReasonCode, AlignmentMode | None], Severity] = {
     (ReasonCode.NESTED_ARCHIVE,       None): Severity.WARN,
     (ReasonCode.ENCRYPTED_ARCHIVE,    None): Severity.WARN,
     (ReasonCode.PERMISSION_DENIED,    None): Severity.ERROR,
+    (ReasonCode.DECODE_ERROR,         None): Severity.ERROR,
+    (ReasonCode.CORRUPT_ARCHIVE,      None): Severity.ERROR,
 
     # Mode violations
     (ReasonCode.HEADERLESS_NAME_MODE, None): Severity.ERROR,
