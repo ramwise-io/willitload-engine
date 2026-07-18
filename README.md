@@ -96,7 +96,13 @@ graph TD
 ## ⚡ Quickstart
 
 ### 1. Installation
-Install the package locally:
+
+Install the package directly from GitHub:
+```bash
+pip install git+https://github.com/ramca-cyber/willitload-engine.git
+```
+
+Or install it locally for development:
 ```bash
 pip install -e .
 ```
