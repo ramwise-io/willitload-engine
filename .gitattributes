@@ -1,2 +1,9 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+# Explicitly treat binary formats as binary to prevent auto line-ending conversion
+*.gz -text
+*.zip -text
+*.parquet -text
+*.sqlite -text
+*.db -text

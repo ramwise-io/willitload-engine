@@ -219,6 +219,8 @@ class TestResolver:
         import sys
         if sys.platform == "win32":
             pytest.skip("Windows does not support POSIX permission modes via chmod")
+        if hasattr(os, "geteuid") and os.geteuid() == 0:
+            pytest.skip("Running as root; chmod 0o000 will be bypassed by the OS")
 
         f = tmp_path / "denied.csv"
         f.write_text("col1\nval\n")
