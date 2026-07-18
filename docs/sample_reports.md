@@ -213,3 +213,71 @@ The engine's stable JSON contract output from the same run as Scenario 2.
   ]
 }
 ```
+
+---
+
+## 🚕 Scenario 6: Real-World NYC Yellow Taxi Trip Scan (Large Parquet Dataset)
+
+Scanning a dataset of millions of rows of columnar **Parquet** files from the NYC Taxi & Limousine Commission. This scan exposes silent **Type Drift** between different months of reports.
+
+### Command
+```bash
+willitload scan "./data/yellow_tripdata_*.parquet"
+```
+
+### Terminal Output
+```ansi
+willitload scan -- ./data/yellow_tripdata_*.parquet
+  2 files seen  |  2 profiled  |  0 degraded  |  0 catalogued  |  0 refused
+  Elapsed: 565ms
+
+Fileset Findings
+  WARN Column 'trip_distance' infers as different types across files in family 
+F0001: decimal in 1 files, int in 1 file(s). This is especially dangerous for 
+sequential concat operations (pandas, etc.) where type coercion can silently 
+corrupt data.
+  WARN Column 'store_and_fwd_flag' infers as different types across files in 
+family F0001: decimal in 1 files, int in 1 file(s). This is especially 
+dangerous for sequential concat operations (pandas, etc.) where type coercion 
+can silently corrupt data.
+
+1 structural family detected
++-----------------------------------------------------------------------------+
+| Family | Files | Columns | Type Variants | Representative Columns           |
+|--------+-------+---------+---------------+----------------------------------|
+| F0001  |     2 |      19 |             2 | vendorid, tpep_pickup_datetime,  |
+|        |       |         |               | tpep_dropoff_datetime,           |
+|        |       |         |               | passenger_count, trip_distance,  |
+|        |       |         |               | ratecodeid... (+13)              |
++-----------------------------------------------------------------------------+
+No structural anomalies detected within the fileset.
+```
+
+---
+
+## 📰 Scenario 7: Real-World Production API Logs Scan (Messy JSONL Dataset)
+
+Auditing a raw ingestion dump directory containing messy JSONL pulls from various RSS, Dev.to, StackOverflow, and GitHub API sources. The engine scans the entire set in under a second and clusters them into a single structural family, verifying clean layout homogeneity.
+
+### Command
+```bash
+willitload scan "./raw_logs/**/*.jsonl"
+```
+
+### Terminal Output
+```ansi
+willitload scan -- ./raw_logs/**/*.jsonl
+  44 files seen  |  44 profiled  |  0 degraded  |  0 catalogued  |  0 refused
+  Elapsed: 929ms
+
+1 structural family detected
++-----------------------------------------------------------------------------+
+| Family | Files | Columns | Type Variants | Representative Columns           |
+|--------+-------+---------+---------------+----------------------------------|
+| F0001  |    44 |      17 |             1 | id, source_id, source_record_id, |
+|        |       |         |               | envelope_schema, payload_schema, |
+|        |       |         |               | pull_id... (+11)                 |
++-----------------------------------------------------------------------------+
+No structural anomalies detected within the fileset.
+```
+
