@@ -97,9 +97,9 @@ graph TD
 
 ### 1. Installation
 
-Install the package directly from GitHub:
+Install the package from PyPI:
 ```bash
-pip install git+https://github.com/ramwise-io/willitload-engine.git
+pip install willitload
 ```
 
 Or install it locally for development:
