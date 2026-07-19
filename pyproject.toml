@@ -9,7 +9,7 @@ description = "Fileset structural pre-flight for bulk loads — finds the one ba
 readme = "README.md"
 license = { text = "Apache-2.0" }
 requires-python = ">=3.10"
-authors = [{ name = "Ramji" }]
+authors = [{ name = "Ramwise", email = "ram@ramwise.dev" }]
 keywords = ["data-engineering", "etl", "bulk-load", "data-quality", "pre-flight", "duckdb"]
 classifiers = [
     "Development Status :: 3 - Alpha",
@@ -28,6 +28,12 @@ dependencies = [
     "rich>=13",
     "openpyxl>=3.1.0",
 ]
+
+[project.urls]
+Homepage = "https://github.com/ramwise-io/willitload-engine"
+Repository = "https://github.com/ramwise-io/willitload-engine"
+Issues = "https://github.com/ramwise-io/willitload-engine/issues"
+Documentation = "https://github.com/ramwise-io/willitload-engine/blob/main/README.md"
 
 [project.optional-dependencies]
 dev = [

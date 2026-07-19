@@ -6,7 +6,7 @@
 
 `willitload` is a stateless, deterministic, local-first engine designed to validate bulk filesets before your loader attempts to ingest them. It finds the single structurally broken file that would fail your bulk load, allowing you to quarantine it *before* wasting hours of pipeline compute.
 
-👉 **[View Sample Scan & Check Reports](docs/sample_reports.md)** | **[Read the Design Specification](docs/engine-spec.md)**
+👉 **[View Sample Scan & Check Reports](docs/sample_reports.md)** | **[Read the Design Specification](docs/engine-spec.md)** | **[Stability Contract Guarantees](docs/contract.md)**
 
 ---
 
