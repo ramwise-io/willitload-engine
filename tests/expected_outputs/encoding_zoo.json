@@ -1,5 +1,5 @@
 {
-  "version": "0.1.0",
+  "version": "0.1.1",
   "path_expression": "tests/fixtures/encoding_zoo",
   "elapsed_ms": 0.0,
   "accounting": {

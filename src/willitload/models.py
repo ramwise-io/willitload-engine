@@ -380,7 +380,7 @@ class ScanResult:
     families: list[FamilySummary] = field(default_factory=list)
     scan_findings: list[Finding] = field(default_factory=list)
     """File-set-level findings (e.g. ceiling warnings, zero-match)."""
-    version: str = "0.1.0"
+    version: str = "0.1.1"
 
     @property
     def files_seen(self) -> int:
@@ -424,7 +424,7 @@ class CheckResult:
     """Files with WARN-grade findings but no ERRORs."""
     scan_findings: list[Finding] = field(default_factory=list)
     """File-set-level findings."""
-    version: str = "0.1.0"
+    version: str = "0.1.1"
 
     @property
     def has_errors(self) -> bool:

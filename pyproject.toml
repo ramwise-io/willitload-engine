@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "willitload"
-version = "0.1.0"
+version = "0.1.1"
 description = "Fileset structural pre-flight for bulk loads — finds the one bad file before your loader does."
 readme = "README.md"
 license = { text = "Apache-2.0" }

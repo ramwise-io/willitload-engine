@@ -69,6 +69,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     scan_p.add_argument("path", help="Directory, glob, or file path to scan.")
     scan_p.add_argument("--json", action="store_true", help="Emit JSON (the API contract).")
+    scan_p.add_argument("--no-color", action="store_true", help="Disable colored output.")
     scan_p.add_argument(
         "--file-ceiling",
         type=int,
@@ -105,6 +106,7 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Extra-column policy (default: strict).",
     )
     check_p.add_argument("--json", action="store_true", help="Emit JSON (the API contract).")
+    check_p.add_argument("--no-color", action="store_true", help="Disable colored output.")
     check_p.add_argument(
         "--file-ceiling",
         type=int,
