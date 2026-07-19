@@ -90,3 +90,27 @@ class TestScanResultJSON:
         assert parsed["path_expression"] == "./test/"
         assert "file_verdicts" in parsed
         assert parsed["accounting"]["reconciles"] is True
+
+    def test_check_result_round_trip_json(self):
+        import json
+        from willitload.models import CheckResult, AlignmentMode, ExtraColumnPolicy
+        acc = Accounting(files_seen=2, profiled=2, degraded=0, catalogued=0, refused=0)
+        result = CheckResult(
+            path_expression="./test/",
+            baseline_source="file",
+            alignment_mode=AlignmentMode.NAME,
+            extra_column_policy=ExtraColumnPolicy.STRICT,
+            elapsed_ms=42.5,
+            accounting=acc,
+            golden=[],
+            broken=[],
+            warned=[],
+        )
+        j = result.to_json()
+        parsed = json.loads(j)
+        assert parsed["has_errors"] is False
+        assert parsed["path_expression"] == "./test/"
+        assert parsed["alignment_mode"] == "name"
+        assert parsed["extra_column_policy"] == "strict"
+        assert "golden" in parsed
+        assert "broken" in parsed

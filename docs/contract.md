@@ -13,7 +13,7 @@ Users and pipeline developers are encouraged to rely on the following public bou
 * **Flag Names & Syntax:**
   * `--against` (target schema or baseline file)
   * `--align` (`name` or `position`)
-  * `--extra` (`strict` or `ignore`)
+  * `--extra` (`strict` or `open`)
   * `--json` (machine-readable JSON format output)
   * `--version` and `--help`
 

@@ -441,6 +441,7 @@ class CheckResult:
             "baseline_source": self.baseline_source,
             "alignment_mode": self.alignment_mode.value,
             "extra_column_policy": self.extra_column_policy.value,
+            "has_errors": self.has_errors,
             "elapsed_ms": self.elapsed_ms,
             "accounting": self.accounting.to_dict(),
             "scan_findings": [f.to_dict() for f in self.scan_findings],
